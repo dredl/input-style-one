@@ -1,0 +1,214 @@
+@import "./styles/fonts";
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+	@content
+  }
+  &:-moz-placeholder {
+	@content
+  }
+  &::-moz-placeholder {
+	@content
+  }
+  &:-ms-input-placeholder {
+	@content
+  }
+}
+.mad-form {
+  &-cd {
+	display: flex;
+	margin-top: 3px;
+	span {
+	  font-size: 13px;
+	  display: flex;
+	  align-items: center;
+	  cursor: pointer;
+	  img {
+		padding-right: 5px;
+		width: 16px;
+		height: 16px;
+	  }
+	}
+	.addBlock {
+	  margin-right: 15px;
+	  color: #5cba51;
+	}
+	.removeBlock {
+	  color: #ff0000;
+	}
+  }
+  &-labels {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+  }
+  &-optional {
+	font-size: 13px;
+	font-family: $font_med;
+	color: #CCCCCC;
+	margin-bottom: 5px;
+	line-height: 1;
+  }
+  &-group {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+	margin-bottom: 10px;
+	.mad-form-label {
+	  font-size: 15px;
+	  align-self: flex-start;
+	  font-family: $font_med;
+	  color: #4B4B4D;
+	  margin-bottom: 5px;
+	}
+	$font_size: 16px;
+
+	.DayPickerInput {
+	  width: 100%;
+	}
+	textarea.mad-form-control {
+		width: -webkit-fill-available
+	}
+	.mad-form-control, .DayPickerInput input {
+	  display: block;
+	  width: -webkit-fill-available;
+	  height: $font_size;
+	  padding: 10px 10px;
+	  font-size: $font_size;
+	  line-height: 1.5;
+	  color: black;
+	  font-family: $font_bold;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 2px solid #B3B3B3;
+	  border-radius: 4px;
+	  @include placeholder {
+		color: #B3B3B3;
+		font-family: $font_med;
+	  }
+	  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	  &:focus {
+		outline: 0;
+		border-color: #808080;
+	  }
+	  &:disabled {
+		background-color: rgb(242, 242, 242);
+		color: #999999;
+	  }
+	}
+	.mad-form-input-group {
+	  width: 100%;
+	  height: $font_size + 24px;
+	  font-size: $font_size;
+	  line-height: 1.5;
+	  color: black;
+	  font-family: $font_bold;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 2px solid #B3B3B3;
+	  border-radius: 4px;
+	  display: flex;
+	  @include placeholder {
+		color: #B3B3B3;
+		font-family: $font_med;
+	  }
+	  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	  &:focus {
+		outline: 0;
+		border-color: #808080;
+	  }
+	  img {
+		width: 18px;
+		height: 18px;
+	  }
+	  .mad-form-control{
+		border: none;
+	  }
+	}
+	.mad-form-status {
+    position: absolute;
+    top: 50%;
+	  right: 14px;
+	  img {
+		width: 8px;
+	  }
+	}
+	&.disabled {
+	  .mad-form-status {
+		img {
+		  visibility: hidden;
+		}
+	  }
+	  .mad-form-label {
+		span {
+		  color: #4B4B4D;
+		}
+	  }
+	}
+  }
+  .form-row {
+	position: relative;
+  }
+}
+.input__item {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 18px;
+  display: flex;
+  .input-control-s {
+	flex-grow: 1;
+	height: 40px;
+	display: block;
+	background-color: white;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 14px;
+	padding: 10px;
+	outline: none;
+	border: {
+	  top: 2px solid #B3B3B3;
+	  bottom: 2px solid #B3B3B3;
+	  right: 2px solid #B3B3B3;
+	  left: 0 solid transparent;
+	}
+  }
+  .input-control-s::placeholder {
+	color: #B3B3B3;
+	font-family: $font_med;
+  }
+  &-icon {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: {
+	  top: 2px solid #B3B3B3;
+	  bottom: 2px solid #B3B3B3;
+	  left: 2px solid #B3B3B3;
+	}
+	position: relative;
+	//height: 40px;
+	padding: 6px 0 6px 6px;
+	align-items: center;
+	display: flex;
+	img {
+	  height: 18px;
+	  width: 18px;
+	}
+	span {
+	  margin-left: 6px;
+	  border-left: 1px solid #B3B3B3;
+	  padding-top: 25px;
+	}
+  }
+  &-status {
+	background: white;
+	position: absolute;
+	//height: 40px;
+	right: 14px;
+	top: 7px;
+	img {
+	  //height: 11px;
+	  width: 8px;
+	}
+  }
+}

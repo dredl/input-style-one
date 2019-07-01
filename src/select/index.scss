@@ -1,0 +1,27 @@
+@import "../styles/fonts";
+//Select
+.mad-select__menu {
+  font-family: $font_med;
+  margin-top: 5px !important;
+  text-align: left;
+}
+.mad-select__control {
+  height: 40px;
+}
+.mad-select__single-value {
+  color: #333333;
+  font-family: $font_bold;
+}
+.mad-select__dropdown-indicator {
+  padding: 8px 10px 8px 8px !important;
+}
+
+.mad-select__indicators {
+  padding-right: 10px;
+  div {
+    padding: 0 !important;
+    div {
+      padding: 0 !important;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@import "../styles/fonts";
+
+$color: #191919;
+.tippy-popper[x-placement^='bottom'] {
+  .tippy-arrow {
+	border-top-color: $color;
+  }
+}
+.tippy-tooltip {
+  padding: 0 !important;
+  border-radius: 5px;
+  background-color: #191919;
+
+}
+
+
+.tippy-arrow {
+  border-top-color: $color;
+}
+ .tippy-tooltip .tippy-arrow {
+  border-bottom-color: $color;
+}
+.tippy-popper[x-placement^='left'] .tippy-arrow {
+  border-left-color: $color;
+}
+.tippy-popper[x-placement^='right'] .tippy-arrow {
+  border-right-color: $color;
+}
+
+.mad-tooltip{
+  padding: 10px;
+  &.success {
+    border-bottom: 5px solid #52C745;
+  }
+  &.error {
+    border-bottom: 5px solid #FF0000;
+  }
+  &.info {
+    border-bottom: 5px solid #FFD012;
+  }
+  border-radius: 5px;
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+  &__title {
+    line-height: 1;
+    font-size: 13px;
+    font-family: $font_bold;
+    text-align: left;
+  }
+  &__description {
+    margin-top: 5px;
+    font-size: 13px;
+    font-family: $font_med;
+    text-align: left;
+  }
+}

@@ -1,0 +1,70 @@
+body{
+  margin: 0px;
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* font-size: calc(10px + 2vmin); */
+  /* color: white; */
+}
+.App-panel {
+  background: white;
+  padding: 40px;
+  width: 500px;
+  border-radius: 10px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: dinpro-med;
+  src: url('/assets/fonts/dinpro/medium/DINPro-Medium.eot');
+  src: url('/assets/fonts/dinpro/medium/DINPro-Medium.woff2') format('woff2'),
+  url('/assets/fonts/dinpro/medium/DINPro-Medium.woff') format('woff'),
+  url('/assets/fonts/dinpro/medium/DINPro-Medium.ttf') format('truetype'),
+  url('/assets/fonts/dinpro/medium/DINPro-Medium.svg#DINPro-Medium') format('svg'),
+  url('/assets/fonts/dinpro/medium/DINPro-Medium.eot?#iefix') format('embedded-opentype'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: dinpro-bold;
+  src: url('/assets/fonts/dinpro/bold/DINPro-Bold.eot');
+  src: url('/assets/fonts/dinpro/bold/DINPro-Bold.woff2') format('woff2'),
+  url('/assets/fonts/dinpro/bold/DINPro-Bold.woff') format('woff'),
+  url('/assets/fonts/dinpro/bold/DINPro-Bold.ttf') format('truetype'),
+  url('/assets/fonts/dinpro/bold/DINPro-Bold.svg#DINPro-Bold') format('svg'),
+  url('/assets/fonts/dinpro/bold/DINPro-Bold.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
