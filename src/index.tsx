@@ -7,12 +7,12 @@ import "./index.scss"
 import Textarea from "react-textarea-autosize"
 import moment from "moment"
 import DayPickerInput from "react-day-picker/DayPickerInput"
-// import MomentLocaleUtils from "react-day-picker/moment"
-import 'react-day-picker/lib/style.css';
+import MomentLocaleUtils from "react-day-picker/moment"
+import "react-day-picker/lib/style.css"
 import MadSelect from "./select"
 import NumberFormat from "react-number-format"
-import {I18nextProvider, Trans} from 'react-i18next'
-import translations from './i18n'
+import { I18nextProvider, Trans } from "react-i18next"
+import translations from "./i18n"
 import RedSupCross from "../assets/RedSupCross.svg"
 import GreenSupGal from "../assets/GreenSupGal.svg"
 interface IInputStyleOne {
@@ -49,7 +49,7 @@ interface IInputStyleOne {
  * PRIME4ANIE: kogda my pomewaem v component MadTooltip.. nuzhno obora4ivat' ego toka v odin tag.. naprimer <div>
  *   inache vse posleduuwie tooltipy v forme rabotat' ne budut
  */
-const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
+const InputStyleOne: React.FC<IInputStyleOne> = props => {
   const [tooltip, setTooltip] = useState({
     enabled: true,
     isVisible: false,
@@ -78,7 +78,6 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
     }
   }, [])
 
-
   //Вынес в отдельную ф-ю, т.к будет вызызаться в случаях если value уже существует
   const validateRules = (rules, value) => {
     let isValid = true
@@ -89,7 +88,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
           switch (rule) {
             case "required":
               if (validator.isEmpty(value)) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: __.t("tooltipDescriptionEmpty", { attribute: tooltip.title }),
@@ -100,7 +99,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
               break
             case "email":
               if (!validator.isEmail(value) && !validator.isEmpty(value)) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: __.t("tooltipDescriptionIncorrect", { attribute: tooltip.title }),
@@ -112,7 +111,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
 
             case "integer":
               if (!validator.isInt(value) && !validator.isEmpty(value)) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: "Должен быть целым числом",
@@ -128,7 +127,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
           switch (rule[0]) {
             case "max":
               if (!validator.isLength(value, { max: rule[1] })) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: "Количество символов превышает максималку",
@@ -140,7 +139,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
 
             case "compare":
               if (value != rule[1]) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: __.t("tooltipDescriptionPasswordMatch"),
@@ -152,7 +151,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
 
             case "minAmountValue":
               if (value < rule[1]) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: "Объем товара должен быть не менее 500 тонн",
@@ -163,7 +162,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
               break
             case "minValue":
               if (parseInt(value) > parseInt(rule[1])) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: "значение должно быть меньше или равно " + rule[1],
@@ -174,7 +173,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
               break
             case "gte":
               if (parseInt(value) < parseInt(rule[1])) {
-                setStatus('error')
+                setStatus("error")
                 setTooltip({
                   ...tooltip,
                   description: "значение должно быть больше или равно " + rule[1],
@@ -189,10 +188,10 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
     })
 
     if (isValid) {
-      setStatus('success')
+      setStatus("success")
       setTooltip({
         ...tooltip,
-        description: __.t("tooltipDescriptionTrue", { attribute: tooltip.title }),
+        description: __.t("tooltipDescriptionTrue", { attribute: props.label }),
         messageType: "success"
       })
       isValid = false
@@ -201,7 +200,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
     return isValid
   }
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     e.preventDefault()
     const { value } = e.target
     const rules = props.rules
@@ -211,7 +210,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
   }
 
   // cb ф-я NurmerFormat, вынес отдельно т.к отличается передаваемые параметры
-  const handleValueChange = (values) => {
+  const handleValueChange = values => {
     const { value } = values
     const { rules } = props
 
@@ -219,12 +218,12 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
     props.numberFormatOptions.onValueChange(value, isValid)
   }
 
-  const handleFocus = (e) => {
+  const handleFocus = e => {
     e.preventDefault()
     setTooltip({ ...tooltip, isVisible: true, messageType: status })
   }
 
-  const handleBlur = (e) => {
+  const handleBlur = e => {
     e.preventDefault()
     setTooltip({ ...tooltip, isVisible: false, messageType: status })
   }
@@ -355,6 +354,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
                 format="DD MMMM YYYY"
                 dayPickerProps={{
                   locale: "ru",
+                  localeUtils: MomentLocaleUtils,
                   name,
                   ...props.datePickerOptions
                 }}
@@ -453,11 +453,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = (props) => {
     )
   }
 
-  return (
-    <I18nextProvider i18n={translations}>
-      {renderInput(props.layout)}
-    </I18nextProvider>
-  )
+  return <I18nextProvider i18n={translations}>{renderInput(props.layout)}</I18nextProvider>
 }
 
 export default InputStyleOne

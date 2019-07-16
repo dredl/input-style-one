@@ -4,7 +4,7 @@ import "tippy.js/dist/tippy.css"
 import "./index.scss"
 import __ from "i18next"
 
-const MadTooltip:FC<any> = ({ children, data }) => {
+const MadTooltip: FC<any> = ({ children, data }) => {
   let { title, description, isVisible, messageType } = data
   const Content = (
     <Fragment>

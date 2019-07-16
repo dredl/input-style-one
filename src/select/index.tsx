@@ -3,6 +3,7 @@ import Select, { components } from "react-select"
 import "./index.scss"
 import ShivU from "../../assets/ShivU.svg"
 import ShivD from "../../assets/ShivD.svg"
+import CrossInput from "../../assets/cross-imput.svg"
 // const ShivU = ""
 // const ShivD = ""
 const StdSpinner = () => {
@@ -54,7 +55,7 @@ const DropdownIndicator = props => {
 }
 const ClearIndicator = props => {
   const {
-    children = <img src="/assets/cross-imput.svg" style={{ width: 15 }} alt="" />,
+    children = <img src={CrossInput} style={{ width: 15 }} alt="" />,
     getStyles,
     innerProps: { ref, ...restInnerProps }
   } = props

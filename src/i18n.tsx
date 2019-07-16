@@ -15,7 +15,7 @@ i18n
     resources: {
       ru: { common: commonRU },
       en: { common: commonEn },
-      kk: { common: commonKK },
+      kk: { common: commonKK }
     },
     ns: ["common"],
     defaultNS: "common",
