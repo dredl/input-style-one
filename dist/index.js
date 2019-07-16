@@ -86,16 +86,16 @@ function styleInject(css, ref) {
 var css = ".tippy-popper[x-placement^=bottom] .tippy-arrow{border-top-color:#191919}.tippy-tooltip{padding:0!important;border-radius:5px;background-color:#191919}.tippy-arrow{border-top-color:#191919}.tippy-tooltip .tippy-arrow{border-bottom-color:#191919}.tippy-popper[x-placement^=left] .tippy-arrow{border-left-color:#191919}.tippy-popper[x-placement^=right] .tippy-arrow{border-right-color:#191919}.mad-tooltip{padding:10px;border-radius:5px}.mad-tooltip.success{border-bottom:5px solid #52c745}.mad-tooltip.error{border-bottom:5px solid red}.mad-tooltip.info{border-bottom:5px solid #ffd012}.mad-tooltip__content{display:flex;flex-direction:column}.mad-tooltip__title{line-height:1;font-size:13px;font-family:dinpro-bold;text-align:left}.mad-tooltip__description{margin-top:5px;font-size:13px;font-family:dinpro-med;text-align:left}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy90b29sdGlwL2luZGV4LnNjc3MiLCJzcmMvc3R5bGVzL19mb250cy5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdBLGdEQUVDLHdCQUhjLENBTWYsZUFDRSxtQkFBcUIsQ0FDckIsaUJBQWtCLENBQ2xCLHdCQUF5QixDQUszQixhQUNFLHdCQWZhLENBaUJkLDRCQUNDLDJCQWxCYSxDQW9CZiw4Q0FDRSx5QkFyQmEsQ0F1QmYsK0NBQ0UsMEJBeEJhLENBMkJmLGFBQ0UsWUFBYSxDQVViLGlCQUFrQixDQVhwQixxQkFHSSwrQkFBZ0MsQ0FIcEMsbUJBTUksMkJBQWdDLENBTnBDLGtCQVNJLCtCQUFnQyxDQUdsQyxzQkFDRSxZQUFhLENBQ2IscUJBQXNCLENBRXhCLG9CQUNFLGFBQWMsQ0FDZCxjQUFlLENBQ2YsdUJDL0NtQixDRGdEbkIsZUFBZ0IsQ0FFbEIsMEJBQ0UsY0FBZSxDQUNmLGNBQWUsQ0FDZixzQkN0RGlCLENEdURqQixlQUFnQiIsImZpbGUiOiJpbmRleC5zY3NzIn0= */";
 styleInject(css);
 
+//nuzhno otrefactorit'
 var MadTooltip = function (_a) {
-    var children = _a.children, data = _a.data;
+    var children = _a.children, data = _a.data, enabled = _a.enabled;
     var title = data.title, description = data.description, isVisible = data.isVisible, messageType = data.messageType;
     var Content = (React__default.createElement(React.Fragment, null,
         React__default.createElement("div", { className: "mad-tooltip " + messageType },
             React__default.createElement("div", { className: "mad-tooltip__content" },
                 React__default.createElement("span", { className: "mad-tooltip__title" }, title),
                 React__default.createElement("span", { className: "mad-tooltip__description" }, description)))));
-    return (React__default.createElement(React.Fragment, null,
-        React__default.createElement(Tippy, { content: Content, animation: "fade", placement: "right", trigger: "manual", isVisible: isVisible, hideOnClick: false, arrow: true }, children)));
+    return (React__default.createElement(React.Fragment, null, enabled == undefined ? (React__default.createElement(Tippy, { content: Content, animation: "fade", placement: "right", trigger: "manual", isVisible: isVisible, hideOnClick: false, arrow: true }, children)) : (children)));
 };
 
 var css$1 = ".mad-form-cd{display:flex;margin-top:3px}.mad-form-cd span{font-size:13px;display:flex;align-items:center;cursor:pointer}.mad-form-cd span img{padding-right:5px;width:16px;height:16px}.mad-form-cd .addBlock{margin-right:15px;color:#5cba51}.mad-form-cd .removeBlock{color:red}.mad-form-labels{display:flex;justify-content:space-between;align-items:flex-end}.mad-form-optional{font-size:13px;font-family:dinpro-med;color:#ccc;margin-bottom:5px;line-height:1}.mad-form-group{position:relative;display:flex;flex-direction:column;line-height:1;margin-bottom:10px}.mad-form-group .mad-form-label{font-size:15px;align-self:flex-start;font-family:dinpro-med;color:#4b4b4d;margin-bottom:5px}.mad-form-group .DayPickerInput{width:100%}.mad-form-group textarea.mad-form-control{width:-webkit-fill-available;line-height:1}.mad-form-group .DayPickerInput input,.mad-form-group .mad-form-control{display:block;width:-webkit-fill-available;padding:8px 10px;font-size:16px;line-height:1;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .DayPickerInput input::-webkit-input-placeholder,.mad-form-group .mad-form-control::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-moz-placeholder,.mad-form-group .DayPickerInput input::-moz-placeholder,.mad-form-group .mad-form-control:-moz-placeholder,.mad-form-group .mad-form-control::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-ms-input-placeholder,.mad-form-group .mad-form-control:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:focus,.mad-form-group .mad-form-control:focus{outline:0;border-color:grey}.mad-form-group .DayPickerInput input:disabled,.mad-form-group .mad-form-control:disabled{background-color:#f2f2f2;color:#999}.mad-form-group .mad-form-input-group{width:100%;height:40px;font-size:16px;line-height:1.5;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;display:flex;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .mad-form-input-group::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-moz-placeholder,.mad-form-group .mad-form-input-group::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:focus{outline:0;border-color:grey}.mad-form-group .mad-form-input-group img{width:18px;height:18px}.mad-form-group .mad-form-input-group .mad-form-control{border:none}.mad-form-group .mad-form-status{position:absolute;top:50%;right:14px}.mad-form-group .mad-form-status img{width:8px}.mad-form-group.disabled .mad-form-status img{visibility:hidden}.mad-form-group.disabled .mad-form-label span{color:#4b4b4d}.input__item,.mad-form .form-row{position:relative}.input__item{width:100%;margin-bottom:18px;display:flex}.input__item .input-control-s{flex-grow:1;font-family:dinpro-bold;font-size:16px;display:block;background-color:#fff;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:8px 10px;outline:none;border:2px solid #b3b3b3;border-left:0 solid transparent}.input__item .input-control-s::placeholder{color:#b3b3b3;font-family:dinpro-med}.input__item-icon{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top:2px solid #b3b3b3;border-bottom:2px solid #b3b3b3;border-left:2px solid #b3b3b3;position:relative;padding:4px 0 4px 6px;align-items:center;display:flex}.input__item-icon img{height:18px;width:18px}.input__item-icon span{margin-left:6px;border-left:1px solid #b3b3b3;padding-top:25px}.input__item-status{background:#fff;position:absolute;right:14px;top:7px}.input__item-status img{width:8px}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9pbmRleC5zY3NzIiwic3JjL3N0eWxlcy9fZm9udHMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFnQkUsYUFDRCxZQUFhLENBQ2IsY0FBZSxDQUZiLGtCQUlBLGNBQWUsQ0FDZixZQUFhLENBQ2Isa0JBQW1CLENBQ25CLGNBQWUsQ0FQZixzQkFTRCxpQkFBa0IsQ0FDbEIsVUFBVyxDQUNYLFdBQVksQ0FYWCx1QkFlQSxpQkFBa0IsQ0FDbEIsYUFBYyxDQWhCZCwwQkFtQkEsU0FBYyxDQUdmLGlCQUNELFlBQWEsQ0FDYiw2QkFBOEIsQ0FDOUIsb0JBQXFCLENBRXBCLG1CQUNELGNBQWUsQ0FDZixzQkM3Q29CLENEOENwQixVQUFjLENBQ2QsaUJBQWtCLENBQ2xCLGFBQWMsQ0FFYixnQkFDRCxpQkFBa0IsQ0FDbEIsWUFBYSxDQUNiLHFCQUFzQixDQUN0QixhQUFjLENBQ2Qsa0JBQW1CLENBTGpCLGdDQU9BLGNBQWUsQ0FDZixxQkFBc0IsQ0FDdEIsc0JDM0RrQixDRDREbEIsYUFBYyxDQUNkLGlCQUFrQixDQVhsQixnQ0FnQkEsVUFBVyxDQWhCWCwwQ0FtQkQsNEJBQTZCLENBQzdCLGFBQWMsQ0FwQmIsd0VBdUJBLGFBQWMsQ0FDZCw0QkFBNkIsQ0FDN0IsZ0JBQWlCLENBQ2pCLGNBYmMsQ0FjZCxhQUFjLENBQ2QsVUFBWSxDQUNaLHVCQzlFb0IsQ0QrRXBCLHFCQUFzQixDQUN0QiwyQkFBNEIsQ0FDNUIsd0JBQXlCLENBQ3pCLGlCQUFrQixDQUtsQixvRUFBd0UsQ0F0RnpFLDhIQW1GQSxhQUFjLENBQ2Qsc0JDdEZtQixDRFFuQixzTkE2RUEsYUFBYyxDQUNkLHNCQ3RGbUIsQ0RXbkIsb0hBMEVBLGFBQWMsQ0FDZCxzQkN0Rm1CLENEa0RsQixvRkF3Q0QsU0FBVSxDQUNWLGlCQUFxQixDQXpDcEIsMEZBNENELHdCQUFvQyxDQUNwQyxVQUFjLENBN0NiLHNDQWlEQSxVQUFXLENBQ1gsV0FBeUIsQ0FDekIsY0F0Q2MsQ0F1Q2QsZUFBZ0IsQ0FDaEIsVUFBWSxDQUNaLHVCQ3ZHb0IsQ0R3R3BCLHFCQUFzQixDQUN0QiwyQkFBNEIsQ0FDNUIsd0JBQXlCLENBQ3pCLGlCQUFrQixDQUNsQixZQUFhLENBS2Isb0VBQXdFLENBaEh6RSxpRUE2R0EsYUFBYyxDQUNkLHNCQ2hIbUIsQ0RRbkIsK0dBdUdBLGFBQWMsQ0FDZCxzQkNoSG1CLENEV25CLDREQW9HQSxhQUFjLENBQ2Qsc0JDaEhtQixDRGtEbEIsNENBa0VELFNBQVUsQ0FDVixpQkFBcUIsQ0FuRXBCLDBDQXNFRCxVQUFXLENBQ1gsV0FBWSxDQXZFWCx3REEwRUQsV0FBWSxDQTFFWCxpQ0E4RUMsaUJBQWtCLENBQ2xCLE9BQVEsQ0FDVCxVQUFXLENBaEZYLHFDQWtGRCxTQUFVLENBbEZULDhDQXdGQyxpQkFBa0IsQ0F4Rm5CLDhDQTZGQyxhQUFjLENBU2xCLGlDQUhDLGlCQVFjLENBTGYsYUFFRSxVQUFXLENBRVgsa0JBQW1CLENBQ25CLFlBQWEsQ0FMZiw4QkFPRSxXQUFZLENBQ1osdUJDL0pxQixDRGdLckIsY0FBZSxDQUVmLGFBQWMsQ0FDZCxxQkFBdUIsQ0FDdkIsMkJBQTRCLENBQzVCLDhCQUErQixDQUMvQixnQkFBaUIsQ0FDakIsWUFBYSxDQUtaLHdCQUF5QixDQUF6QiwrQkFBeUIsQ0FyQjVCLDJDQXlCRSxhQUFjLENBQ2Qsc0JDbExtQixDRG9MbkIsa0JBQ0QsMEJBQTJCLENBQzNCLDZCQUE4QixDQUU1Qiw0QkFBc0IsQ0FDdEIsK0JBQXlCLENBQ3pCLDZCQUF1QixDQUV6QixpQkFBa0IsQ0FFbEIscUJBQXNCLENBQ3RCLGtCQUFtQixDQUNuQixZQUFhLENBWlgsc0JBY0EsV0FBWSxDQUNaLFVBQVcsQ0FmWCx1QkFrQkEsZUFBZ0IsQ0FDaEIsNkJBQThCLENBQzlCLGdCQUFpQixDQUdsQixvQkFDRCxlQUFpQixDQUNqQixpQkFBa0IsQ0FFbEIsVUFBVyxDQUNYLE9BQVEsQ0FMTix3QkFRQSxTQUFVIiwiZmlsZSI6ImluZGV4LnNjc3MifQ== */";
@@ -312,7 +312,6 @@ var InputStyleOne = function (props) {
         if (isValid) {
             setStatus("success");
             setTooltip(__assign({}, tooltip, { description: __.t("tooltipDescriptionTrue", { attribute: props.label }), messageType: "success" }));
-            isValid = false;
         }
         return isValid;
     };
@@ -363,7 +362,7 @@ var InputStyleOne = function (props) {
                 React__default.createElement("div", { className: "input__item-icon icons" }, props.iconUrl && (React__default.createElement(React__default.Fragment, null,
                     React__default.createElement("img", { src: props.iconUrl, alt: "" }),
                     React__default.createElement("span", null)))),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement("input", { name: props.name, type: props.inputType, onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, className: "input-control-s", placeholder: props.label, value: props.value, autoComplete: props.autoComplete })),
                 React__default.createElement("div", { className: "input__item-status" },
                     React__default.createElement(ImgIcon, { messageType: status }))));
@@ -371,7 +370,7 @@ var InputStyleOne = function (props) {
         if (props.inputType == "password") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement("input", { name: props.name, type: props.inputType, autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.label, value: props.value, disabled: props.disabled }),
                     React__default.createElement("div", { className: "mad-form-status" },
                         React__default.createElement(ImgIcon, { messageType: status })))));
@@ -379,7 +378,7 @@ var InputStyleOne = function (props) {
         if (props.inputType == "textArea") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement(React__default.Fragment, null,
                         React__default.createElement(Textarea, { className: "mad-form-control", name: props.name, value: props.value, autoComplete: props.autoComplete, onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, disabled: props.disabled, minRows: props.minRows ? props.minRows : null, maxRows: props.maxRows ? props.maxRows : null }),
                         React__default.createElement("div", { className: "mad-form-status" },
@@ -388,7 +387,7 @@ var InputStyleOne = function (props) {
         if (props.inputType == "datePicker") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement("div", { onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); } },
                         React__default.createElement(DayPickerInput, { onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Выберите дату", inputProps: { readOnly: true, name: props.name }, onDayChange: function (day) { return props.datePickerOptions.onDayChange(moment(day).unix(), props.name, true); }, value: props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : "", format: "DD MMMM YYYY", dayPickerProps: __assign({ locale: "ru", localeUtils: MomentLocaleUtils, name: name }, props.datePickerOptions) }),
                         React__default.createElement("div", { className: "mad-form-status" },
@@ -405,7 +404,7 @@ var InputStyleOne = function (props) {
             }
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement(MadSelect, { name: props.name, isClearable: isClearable, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, options: options, 
                         //podumat' nuzhno li suda peredavat' isValid kak vo vseh sobitiyax handleChange
                         onChange: function (value, name) { return onChange_1(value ? value.value : "", name, !!value, value ? value.label : null); }, value: selectedValue, onInputChange: onInputChange_1 ? function (value) { return onInputChange_1(value); } : null, isDisabled: props.disabled, loading: loading }))));
@@ -414,7 +413,7 @@ var InputStyleOne = function (props) {
             var _b = props.numberFormatOptions, suffix = _b.suffix, thousandSeparator = _b.thousandSeparator;
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
-                React__default.createElement(MadTooltip, { data: tooltip },
+                React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement(NumberFormat, { name: props.name, className: "mad-form-control", onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, value: props.value, disabled: props.disabled, suffix: suffix, thousandSeparator: thousandSeparator, onValueChange: function (values) { return handleValueChange(values); } }),
                     React__default.createElement("div", { className: "mad-form-status" },
                         React__default.createElement(ImgIcon, { messageType: status })))));
@@ -422,7 +421,7 @@ var InputStyleOne = function (props) {
         // если inputType не указан то считать поумолчанию inputType=text
         return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
             React__default.createElement(Label, null),
-            React__default.createElement(MadTooltip, { data: tooltip },
+            React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                 React__default.createElement(React__default.Fragment, null,
                     React__default.createElement("input", { name: props.name, 
                         // type={this.props.inputType}

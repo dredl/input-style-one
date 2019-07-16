@@ -7,6 +7,7 @@ interface IInputStyleOne {
     value: any;
     handleChange(e: any, isValid: boolean): void;
     layout?: string;
+    enableTooltip?: boolean;
     inputType?: string;
     disabled?: boolean;
     autoComplete?: string;

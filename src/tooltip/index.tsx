@@ -3,8 +3,8 @@ import Tippy from "@tippy.js/react"
 import "tippy.js/dist/tippy.css"
 import "./index.scss"
 import __ from "i18next"
-
-const MadTooltip: FC<any> = ({ children, data }) => {
+//nuzhno otrefactorit'
+const MadTooltip: FC<any> = ({ children, data, enabled }) => {
   let { title, description, isVisible, messageType } = data
   const Content = (
     <Fragment>
@@ -16,20 +16,23 @@ const MadTooltip: FC<any> = ({ children, data }) => {
       </div>
     </Fragment>
   )
-
   return (
     <Fragment>
-      <Tippy
-        content={Content}
-        animation="fade"
-        placement="right"
-        trigger="manual"
-        isVisible={isVisible}
-        hideOnClick={false}
-        arrow={true}
-      >
-        {children}
-      </Tippy>
+      {enabled == undefined ? (
+        <Tippy
+          content={Content}
+          animation="fade"
+          placement="right"
+          trigger="manual"
+          isVisible={isVisible}
+          hideOnClick={false}
+          arrow={true}
+        >
+          {children}
+        </Tippy>
+      ) : (
+        children
+      )}
     </Fragment>
   )
 }

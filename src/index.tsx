@@ -24,6 +24,7 @@ interface IInputStyleOne {
 
   //optional
   layout?: string
+  enableTooltip?: boolean
   inputType?: string
   disabled?: boolean
   autoComplete?: string
@@ -59,7 +60,6 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
   })
 
   const [status, setStatus] = useState("info")
-
   useEffect(() => {
     if (!props.tooltip) {
       setTooltip({
@@ -194,9 +194,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
         description: __.t("tooltipDescriptionTrue", { attribute: props.label }),
         messageType: "success"
       })
-      isValid = false
     }
-
     return isValid
   }
 
@@ -265,7 +263,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               </>
             )}
           </div>
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <input
               name={props.name}
               type={props.inputType}
@@ -289,7 +287,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <input
               name={props.name}
               type={props.inputType}
@@ -314,7 +312,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <>
               <Textarea
                 className="mad-form-control"
@@ -343,7 +341,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <div onFocus={e => handleFocus(e)} onBlur={e => handleBlur(e)}>
               <DayPickerInput
                 onBlur={e => handleBlur(e)}
@@ -381,7 +379,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <MadSelect
               name={props.name}
               isClearable={isClearable}
@@ -405,7 +403,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
-          <MadTooltip data={tooltip}>
+          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
             <NumberFormat
               name={props.name}
               className="mad-form-control"
@@ -430,7 +428,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     return (
       <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
         <Label />
-        <MadTooltip data={tooltip}>
+        <MadTooltip data={tooltip} enabled={props.enableTooltip}>
           <>
             <input
               name={props.name}

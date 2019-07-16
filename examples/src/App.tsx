@@ -25,6 +25,7 @@ const App: React.FC = () => {
         <div className="App-panel">
           <InputStyleOne
             name="startDate"
+            enableTooltip={false}
             label="Дата погрузки товара"
             inputType="select"
             value={value}
