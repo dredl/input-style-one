@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import MadTooltip from "./tooltip"
-import validator from "validator"
 import _ from "lodash"
 import __ from "i18next"
 import "./index.scss"
@@ -15,12 +14,19 @@ import { I18nextProvider, Trans } from "react-i18next"
 import translations from "./i18n"
 import RedSupCross from "../assets/RedSupCross.svg"
 import GreenSupGal from "../assets/GreenSupGal.svg"
+import { validateInput } from "./validators"
+interface handleParams {
+  value: any
+  name: string
+  label?: string
+  isValid: boolean
+}
 interface IInputStyleOne {
   //required
   name: string
   label: string
   value: any
-  handleChange(e: any, isValid: boolean): void
+  handleChange(args: handleParams): void
 
   //optional
   layout?: string
@@ -41,15 +47,10 @@ interface IInputStyleOne {
   rules?: any //Array<string>
   datePickerOptions?: any
   selectOptions?: any
-
+  validateAfter?: number
   numberFormatOptions?: any
 }
 
-/**
- * Рассмотреть вариант изготовления этого компонента Stateless тк. по мне это вполне реально
- * PRIME4ANIE: kogda my pomewaem v component MadTooltip.. nuzhno obora4ivat' ego toka v odin tag.. naprimer <div>
- *   inache vse posleduuwie tooltipy v forme rabotat' ne budut
- */
 const InputStyleOne: React.FC<IInputStyleOne> = props => {
   const [tooltip, setTooltip] = useState({
     enabled: true,
@@ -79,141 +80,25 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
   }, [])
 
   //Вынес в отдельную ф-ю, т.к будет вызызаться в случаях если value уже существует
-  const validateRules = (rules, value) => {
-    let isValid = true
-    value = value.toString() // poidee ne dolzhen etogo delat'.. no kod lomaetsya kada v mul'tiforme nazhimaew Back
-    _.forEach(rules, rule => {
-      switch (true) {
-        case typeof rule === "string":
-          switch (rule) {
-            case "required":
-              if (validator.isEmpty(value)) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: __.t("tooltipDescriptionEmpty", { attribute: tooltip.title }),
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-            case "email":
-              if (!validator.isEmail(value) && !validator.isEmpty(value)) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: __.t("tooltipDescriptionIncorrect", { attribute: tooltip.title }),
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-
-            case "integer":
-              if (!validator.isInt(value) && !validator.isEmpty(value)) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: "Должен быть целым числом",
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-          }
-          break
-
-        case Array.isArray(rule):
-          switch (rule[0]) {
-            case "max":
-              if (!validator.isLength(value, { max: rule[1] })) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: "Количество символов превышает максималку",
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-
-            case "compare":
-              if (value != rule[1]) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: __.t("tooltipDescriptionPasswordMatch"),
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-
-            case "minAmountValue":
-              if (value < rule[1]) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: "Объем товара должен быть не менее 500 тонн",
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-            case "minValue":
-              if (parseInt(value) > parseInt(rule[1])) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: "значение должно быть меньше или равно " + rule[1],
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-            case "gte":
-              if (parseInt(value) < parseInt(rule[1])) {
-                setStatus("error")
-                setTooltip({
-                  ...tooltip,
-                  description: "значение должно быть больше или равно " + rule[1],
-                  messageType: "error"
-                })
-                isValid = false
-              }
-              break
-          }
-          break
-      }
-    })
-
-    if (isValid) {
-      setStatus("success")
-      setTooltip({
-        ...tooltip,
-        description: __.t("tooltipDescriptionTrue", { attribute: props.label }),
-        messageType: "success"
-      })
-    }
+  const validateRules = (rules, value, validateAfter = 0) => {
+    const { tooltipValidated, isValid, status } = validateInput(rules, value, tooltip, props.label, validateAfter)
+    setStatus(status)
+    setTooltip(tooltipValidated)
     return isValid
   }
 
-  const handleChange = e => {
+  const handleChange = (e, validateAfter = 0) => {
     e.preventDefault()
-    const { value } = e.target
-    const rules = props.rules
-
-    const isValid = validateRules(rules, value)
-    props.handleChange(e, isValid)
+    const { value, name } = e.target
+    const isValid = validateRules(props.rules, value, validateAfter)
+    props.handleChange({ value, name, label: null, isValid })
   }
 
   // cb ф-я NurmerFormat, вынес отдельно т.к отличается передаваемые параметры
-  const handleValueChange = values => {
+  const handleValueChange = (values, validateAfter = 0) => {
     const { value } = values
-    const { rules } = props
-
-    const isValid = validateRules(rules, value)
-    props.numberFormatOptions.onValueChange(value, isValid)
+    const isValid = validateRules(props.rules, value, validateAfter)
+    props.handleChange({ value, name: "whatever", label: null, isValid })
   }
 
   const handleFocus = e => {
@@ -253,6 +138,46 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     }
 
     if (layout == "one") {
+      if (props.inputType == "select") {
+        // todo: nado kak nit' ne poboyatsya sdelat' prosto merge s MadSelect Componentom (<MadSekect {...props.selectOptions}>)
+        const { options, onChange, value, isClearable, onInputChange, loading, noOptionsMessage } = props.selectOptions
+        const { handleChange } = props
+        let selectedValue = null
+        if (_.find(options, { value })) {
+          selectedValue = {
+            value: value,
+            label: _.find(options, { value }) ? _.find(options, { value }).label : ""
+          }
+        }
+
+        return (
+          <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
+            <MadTooltip data={tooltip} enabled={props.enableTooltip}>
+              <MadSelect
+                name={props.name}
+                isClearable={isClearable}
+                onFocus={e => handleFocus(e)}
+                onBlur={e => handleBlur(e)}
+                options={options}
+                noOptionsMessage={noOptionsMessage}
+                onChange={(value, name) =>
+                  props.handleChange({
+                    value: value ? value.value : "",
+                    name,
+                    label: value ? value.label : null,
+                    isValid: !!value
+                  })
+                }
+                placeholder={props.placeholder}
+                value={selectedValue}
+                onInputChange={onInputChange ? value => onInputChange(value) : null}
+                isDisabled={props.disabled}
+                loading={loading}
+              />
+            </MadTooltip>
+          </div>
+        )
+      }
       return (
         <div className="input__item">
           <div className="input__item-icon icons">
@@ -288,21 +213,23 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
           <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <input
-              name={props.name}
-              type={props.inputType}
-              autoComplete={props.autoComplete}
-              className="mad-form-control"
-              onChange={(e: any) => handleChange(e)}
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              placeholder={props.label}
-              value={props.value}
-              disabled={props.disabled}
-            />
-            <div className="mad-form-status">
-              <ImgIcon messageType={status} />
-            </div>
+            <>
+              <input
+                name={props.name}
+                type={props.inputType}
+                autoComplete={props.autoComplete}
+                className="mad-form-control"
+                onChange={(e: any) => handleChange(e)}
+                onFocus={e => handleFocus(e)}
+                onBlur={e => handleBlur(e)}
+                placeholder={props.label}
+                value={props.value}
+                disabled={props.disabled}
+              />
+              <div className="mad-form-status">
+                <ImgIcon messageType={status} />
+              </div>
+            </>
           </MadTooltip>
         </div>
       )
@@ -324,8 +251,8 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onBlur={e => handleBlur(e)}
                 placeholder={props.placeholder ? props.placeholder : "Заполните " + props.label}
                 disabled={props.disabled}
-                minRows={props.minRows ? props.minRows : null}
-                maxRows={props.maxRows ? props.maxRows : null}
+                minRows={props.minRows ? props.minRows : 3}
+                maxRows={props.maxRows ? props.maxRows : 10}
               />
 
               <div className="mad-form-status">
@@ -347,7 +274,9 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onBlur={e => handleBlur(e)}
                 placeholder={props.placeholder ? props.placeholder : "Выберите дату"}
                 inputProps={{ readOnly: true, name: props.name }}
-                onDayChange={day => props.datePickerOptions.onDayChange(moment(day).unix(), props.name, true)}
+                onDayChange={day =>
+                  props.handleChange({ value: moment(day).unix(), name: props.name, isValid: true, label: null })
+                }
                 value={props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : ""}
                 format="DD MMMM YYYY"
                 dayPickerProps={{
@@ -367,7 +296,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     }
 
     if (props.inputType == "select") {
-      const { options, onChange, value, isClearable, onInputChange, loading } = props.selectOptions
+      const { options, onChange, value, isClearable, onInputChange, loading, noOptionsMessage } = props.selectOptions
       let selectedValue = null
       if (_.find(options, { value })) {
         selectedValue = {
@@ -386,8 +315,16 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               onFocus={e => handleFocus(e)}
               onBlur={e => handleBlur(e)}
               options={options}
-              //podumat' nuzhno li suda peredavat' isValid kak vo vseh sobitiyax handleChange
-              onChange={(value, name) => onChange(value ? value.value : "", name, !!value, value ? value.label : null)}
+              placeholder={props.placeholder}
+              noOptionsMessage={noOptionsMessage}
+              onChange={(value, name) =>
+                props.handleChange({
+                  value: value ? value.value : "",
+                  name,
+                  label: value ? value.label : null,
+                  isValid: !!value
+                })
+              }
               value={selectedValue}
               onInputChange={onInputChange ? value => onInputChange(value) : null}
               isDisabled={props.disabled}
@@ -399,27 +336,33 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     }
 
     if (props.inputType == "numberFormat") {
-      const { suffix, thousandSeparator } = props.numberFormatOptions
+      const { suffix, thousandSeparator, format, mask, type } = props.numberFormatOptions
       return (
         <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
           <Label />
           <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <NumberFormat
-              name={props.name}
-              className="mad-form-control"
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              placeholder={props.placeholder ? props.placeholder : "Заполните " + props.label}
-              value={props.value}
-              disabled={props.disabled}
-              suffix={suffix}
-              thousandSeparator={thousandSeparator}
-              onValueChange={values => handleValueChange(values)}
-            />
+            <>
+              <NumberFormat
+                name={props.name}
+                className="mad-form-control"
+                onFocus={e => handleFocus(e)}
+                onBlur={e => handleBlur(e)}
+                placeholder={props.placeholder ? props.placeholder : "Заполните " + props.label}
+                value={props.value}
+                disabled={props.disabled}
+                suffix={suffix}
+                mask={mask}
+                format={format}
+                type={type}
+                thousandSeparator={thousandSeparator}
+                onValueChange={values => handleValueChange(values, props.validateAfter)}
+                decimalScale={2}
+              />
 
-            <div className="mad-form-status">
-              <ImgIcon messageType={status} />
-            </div>
+              <div className="mad-form-status">
+                <ImgIcon messageType={status} />
+              </div>
+            </>
           </MadTooltip>
         </div>
       )
@@ -435,7 +378,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               // type={this.props.inputType}
               autoComplete={props.autoComplete}
               className="mad-form-control"
-              onChange={(e: any) => handleChange(e)}
+              onChange={(e: any) => handleChange(e, props.validateAfter)}
               onFocus={e => handleFocus(e)}
               onBlur={e => handleBlur(e)}
               placeholder={props.placeholder ? props.placeholder : props.label}

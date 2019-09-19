@@ -1,11 +1,17 @@
 import React from "react";
 import "./index.scss";
 import "react-day-picker/lib/style.css";
+interface handleParams {
+    value: any;
+    name: string;
+    label?: string;
+    isValid: boolean;
+}
 interface IInputStyleOne {
     name: string;
     label: string;
     value: any;
-    handleChange(e: any, isValid: boolean): void;
+    handleChange(args: handleParams): void;
     layout?: string;
     enableTooltip?: boolean;
     inputType?: string;
@@ -24,12 +30,8 @@ interface IInputStyleOne {
     rules?: any;
     datePickerOptions?: any;
     selectOptions?: any;
+    validateAfter?: number;
     numberFormatOptions?: any;
 }
-/**
- * Рассмотреть вариант изготовления этого компонента Stateless тк. по мне это вполне реально
- * PRIME4ANIE: kogda my pomewaem v component MadTooltip.. nuzhno obora4ivat' ego toka v odin tag.. naprimer <div>
- *   inache vse posleduuwie tooltipy v forme rabotat' ne budut
- */
 declare const InputStyleOne: React.FC<IInputStyleOne>;
 export default InputStyleOne;

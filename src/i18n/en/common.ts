@@ -4,5 +4,6 @@ export default {
   tooltipDescriptionTrue: 'The "{{attribute}}" field is correct.',
   tooltipDescriptionIncorrect: "Enter valid email address. Example: ivanov@mail.ru",
   tooltipDescriptionPasswordMatch: "Those passwords didn't match. Try again.",
-  optional: "optional"
+  optional: "optional",
+  noOptions: "No Options"
 }

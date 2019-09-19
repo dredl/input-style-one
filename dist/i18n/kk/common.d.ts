@@ -5,5 +5,6 @@ declare const _default: {
     tooltipDescriptionIncorrect: string;
     tooltipDescriptionPasswordMatch: string;
     optional: string;
+    noOptions: string;
 };
 export default _default;

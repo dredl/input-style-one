@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react"
 import Select, { components } from "react-select"
 import "./index.scss"
+import __ from "i18next"
 import ShivU from "../../assets/ShivU.svg"
 import ShivD from "../../assets/ShivD.svg"
 import CrossInput from "../../assets/cross-imput.svg"
-// const ShivU = ""
-// const ShivD = ""
+import { VariableSizeList as List } from "react-window"
+
 const StdSpinner = () => {
   return (
     <div className="mad-uploader-spinner">
@@ -15,14 +16,6 @@ const StdSpinner = () => {
         <div className="sk-bounce-3 sk-child" />
       </div>
     </div>
-  )
-}
-
-const NoOptionsMessage = props => {
-  return (
-    <components.NoOptionsMessage {...props}>
-      <span>Пусто</span>
-    </components.NoOptionsMessage>
   )
 }
 
@@ -80,10 +73,50 @@ const MadSelect = ({
   isClearable = true,
   placeholder = "Выберите",
   onInputChange = null,
-  loading = null
+  loading = null,
+  noOptionsMessage = null
 }) => {
+  const GROUP_HEADER_HEIGHT = 10
+  const ITEM_HEIGHT = 34
+
+  /** Дефолтный MenuList очень медленно работает с большим массивом данных поэтому используем react-window*/
+  const MenuList = props => {
+    const { options, getValue } = props
+    const [value] = getValue()
+
+    const initialOffset = options.indexOf(value) * ITEM_HEIGHT
+
+    const children = React.Children.toArray(props.children)
+
+    function getOptionSize(option) {
+      if (option && option.options) {
+        return option.options.length * ITEM_HEIGHT + GROUP_HEADER_HEIGHT
+      }
+      return ITEM_HEIGHT
+    }
+
+    function getItemSize(i) {
+      return getOptionSize(options[i])
+    }
+
+    const totalHeight = options.reduce((height, option) => {
+      return height + getOptionSize(option)
+    }, 0)
+    const estimatedItemSize = totalHeight / options.length
+    return (
+      <List
+        height={Math.min(totalHeight != 0 ? totalHeight : ITEM_HEIGHT, 300)}
+        itemCount={children.length}
+        itemSize={getItemSize}
+        estimatedItemSize={estimatedItemSize}
+        initialScrollOffset={initialOffset}
+      >
+        {({ index, style }) => <div style={style}>{children[index]}</div>}
+      </List>
+    )
+  }
   return (
-    <div className="mad-form-group">
+    <>
       {label && (
         <label className="mad-form-label">
           {label}
@@ -94,27 +127,22 @@ const MadSelect = ({
         isLoading={loading}
         options={options}
         name={name}
+        className="mad-select"
         classNamePrefix="mad-select"
         isDisabled={isDisabled}
         isClearable={isClearable}
         onChange={e => onChange(e, name)}
         styles={styles}
+        noOptionsMessage={() => (noOptionsMessage ? noOptionsMessage : __.t("noOptions"))}
         onFocus={onFocus ? e => onFocus(e) : null}
         onBlur={onBlur ? e => onBlur(e) : null}
         onInputChange={onInputChange ? value => onInputChange(value) : null}
-        components={{ DropdownIndicator, ClearIndicator, NoOptionsMessage, LoadingMessage }}
+        components={{ DropdownIndicator, ClearIndicator, LoadingMessage, MenuList }}
         defaultValue={value}
         placeholder={placeholder}
       />
-    </div>
+    </>
   )
-}
-const customStyles = {
-  control: (base, state) => ({
-    ...base,
-    "height": "40px",
-    "min-height": "40px"
-  })
 }
 
 const styles = {
@@ -129,8 +157,8 @@ const styles = {
   }),
   placeholder: (provided, state) => ({
     ...provided,
-    "color": "#B3B3B3",
-    "font-family": "dinpro-med"
+    color: "#B3B3B3",
+    fontFamily: "dinpro-med"
   }),
   indicatorSeparator: (provided, state) => ({
     ...provided,
@@ -151,7 +179,7 @@ const styles = {
   menuList: (provided, state) => ({
     ...provided,
     "::-webkit-scrollbar-track": {
-      "margin-top": 0
+      marginTop: 0
     }
   })
 }

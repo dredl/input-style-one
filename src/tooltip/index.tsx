@@ -16,25 +16,22 @@ const MadTooltip: FC<any> = ({ children, data, enabled }) => {
       </div>
     </Fragment>
   )
-  return (
-    <Fragment>
-      {enabled == undefined ? (
-        <Tippy
-          content={Content}
-          animation="fade"
-          placement="right"
-          trigger="manual"
-          isVisible={isVisible}
-          hideOnClick={false}
-          arrow={true}
-        >
-          {children}
-        </Tippy>
-      ) : (
-        children
-      )}
-    </Fragment>
-  )
+  if (enabled == undefined) {
+    return (
+      <Tippy
+        content={Content}
+        animation="fade"
+        placement="right"
+        trigger="manual"
+        isVisible={isVisible}
+        hideOnClick={false}
+        arrow={true}
+      >
+        {children}
+      </Tippy>
+    )
+  }
+  return children
 }
 
 export default MadTooltip

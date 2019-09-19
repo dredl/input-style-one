@@ -1,9 +1,15 @@
 @import "../styles/fonts";
 //Select
+.mad-select {
+  font-size: 16px;
+}
 .mad-select__menu {
   font-family: $font_med;
   margin-top: 5px !important;
   text-align: left;
+  ::-webkit-scrollbar-track {
+    margin-top: 0;
+  }
 }
 .mad-select__control {
   height: 40px;
