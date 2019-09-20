@@ -37,12 +37,14 @@ interface IInputStyleOne {
   placeholder?: string
   minRows?: number
   maxRows?: number
-  tooltip?: {
-    enabled: boolean
-    isVisible: boolean
-    title: string
-    description: string
-  }
+  // tooltip?: {
+  //   isVisible: boolean
+  //   /** Заголовок подсказчика */
+  //   title: string
+  //   description: string
+  //   messageType: string
+  // }
+  infoDescription?: string
   iconUrl?: string
   rules?: any //Array<string>
   datePickerOptions?: any
@@ -53,36 +55,39 @@ interface IInputStyleOne {
 
 const InputStyleOne: React.FC<IInputStyleOne> = props => {
   const [tooltip, setTooltip] = useState({
-    enabled: true,
     isVisible: false,
     title: "",
     description: "",
+    descriptions: {
+      info: null,
+      error: null,
+      success: null
+    },
     messageType: "info"
   })
 
-  const [status, setStatus] = useState("info")
   useEffect(() => {
-    if (!props.tooltip) {
-      setTooltip({
-        ...tooltip,
-        description: __.t("tooltipDescription", { attribute: props.label }),
-        title: props.label
-      })
-      const { value, rules } = props
+    /** Rewrite from default custom infoDescription if needed */
+    setTooltip({
+      ...tooltip,
+      description: props.infoDescription
+        ? props.infoDescription
+        : __.t("tooltipDescription", { attribute: props.label }),
+      title: props.label
+    })
+    const { value, rules } = props
 
-      if (value && !rules) {
-      }
+    if (value && !rules) {
+    }
 
-      if (value && rules) {
-        validateRules(rules, value)
-      }
+    if (value && rules) {
+      validateRules(rules, value)
     }
   }, [])
 
   //Вынес в отдельную ф-ю, т.к будет вызызаться в случаях если value уже существует
   const validateRules = (rules, value, validateAfter = 0) => {
-    const { tooltipValidated, isValid, status } = validateInput(rules, value, tooltip, props.label, validateAfter)
-    setStatus(status)
+    const { tooltipValidated, isValid } = validateInput(rules, value, tooltip, props.label, validateAfter)
     setTooltip(tooltipValidated)
     return isValid
   }
@@ -103,12 +108,12 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
 
   const handleFocus = e => {
     e.preventDefault()
-    setTooltip({ ...tooltip, isVisible: true, messageType: status })
+    setTooltip({ ...tooltip, isVisible: true, messageType: tooltip.messageType })
   }
 
   const handleBlur = e => {
     e.preventDefault()
-    setTooltip({ ...tooltip, isVisible: false, messageType: status })
+    setTooltip({ ...tooltip, isVisible: false, messageType: tooltip.messageType })
   }
 
   const renderInput = (layout = null) => {
@@ -202,7 +207,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
             />
           </MadTooltip>
           <div className={"input__item-status"}>
-            <ImgIcon messageType={status} />
+            <ImgIcon messageType={tooltip.messageType} />
           </div>
         </div>
       )
@@ -227,7 +232,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 disabled={props.disabled}
               />
               <div className="mad-form-status">
-                <ImgIcon messageType={status} />
+                <ImgIcon messageType={tooltip.messageType} />
               </div>
             </>
           </MadTooltip>
@@ -256,7 +261,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               />
 
               <div className="mad-form-status">
-                <ImgIcon messageType={status} />
+                <ImgIcon messageType={tooltip.messageType} />
               </div>
             </>
           </MadTooltip>
@@ -287,7 +292,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 }}
               />
               <div className="mad-form-status">
-                <ImgIcon messageType={status} />
+                <ImgIcon messageType={tooltip.messageType} />
               </div>
             </div>
           </MadTooltip>
@@ -360,7 +365,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               />
 
               <div className="mad-form-status">
-                <ImgIcon messageType={status} />
+                <ImgIcon messageType={tooltip.messageType} />
               </div>
             </>
           </MadTooltip>
@@ -375,7 +380,6 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
           <>
             <input
               name={props.name}
-              // type={this.props.inputType}
               autoComplete={props.autoComplete}
               className="mad-form-control"
               onChange={(e: any) => handleChange(e, props.validateAfter)}
@@ -386,7 +390,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               disabled={props.disabled}
             />
             <div className="mad-form-status">
-              <ImgIcon messageType={status} />
+              <ImgIcon messageType={tooltip.messageType} />
             </div>
           </>
         </MadTooltip>

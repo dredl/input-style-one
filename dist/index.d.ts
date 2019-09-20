@@ -20,12 +20,7 @@ interface IInputStyleOne {
     placeholder?: string;
     minRows?: number;
     maxRows?: number;
-    tooltip?: {
-        enabled: boolean;
-        isVisible: boolean;
-        title: string;
-        description: string;
-    };
+    infoDescription?: string;
     iconUrl?: string;
     rules?: any;
     datePickerOptions?: any;

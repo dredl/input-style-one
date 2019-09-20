@@ -244,9 +244,12 @@ var GreenSupGal = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGl
 var validateInput = function (rules, value, tooltip, label, validateAfter) {
     if (rules === void 0) { rules = []; }
     if (validateAfter === void 0) { validateAfter = 0; }
-    var description = __.t("tooltipDescriptionTrue", { attribute: label });
+    /** Если поле не required и он пустой, то по умолчанию должно быть messageType и description = info, а потом уже срабатывают другие rules */
+    var description = __.t("tooltipDescription", { attribute: label });
+    var messageType = "info";
     var isValid = true;
     value = value.toString();
+    /** Можно указать с какого момента надо  */
     if (value.length >= validateAfter) {
         rules.forEach(function (rule) {
             switch (true) {
@@ -275,23 +278,39 @@ var validateInput = function (rules, value, tooltip, label, validateAfter) {
                                 description = "Должен быть целым числом";
                                 isValid = false;
                             }
+                            if (value < 0) {
+                                description = "Поле не может иметь отрицательное значение";
+                                isValid = false;
+                            }
                             break;
                         case "float":
                             if (!validator.isFloat(value) && !validator.isEmpty(value)) {
                                 description = "Не является число с плавающей точкой";
                                 isValid = false;
                             }
+                            if (value < 0) {
+                                description = "Поле не может иметь отрицательное значение";
+                                isValid = false;
+                            }
                             break;
                         case "url":
-                            if (!validator.isURL(value)) {
+                            if (!validator.isEmpty(value) && !validator.isURL(value)) {
                                 description = "Поле не является правильным сайтом";
                                 isValid = false;
                             }
                             break;
+                        default:
                     }
                     break;
                 case Array.isArray(rule):
                     switch (rule[0]) {
+                        case "custom":
+                            var result = rule[1](value);
+                            if (!result.isValid) {
+                                description = result.description;
+                                isValid = false;
+                            }
+                            break;
                         case "maxString":
                             if (!validator.isLength(value, { max: rule[1] })) {
                                 description = "Превышено максимальное количество символов - " + rule[1];
@@ -330,43 +349,53 @@ var validateInput = function (rules, value, tooltip, label, validateAfter) {
     else {
         return {
             tooltipValidated: __assign({}, tooltip, { messageType: "info" }),
-            status: "info",
             isValid: isValid
         };
     }
-    var messageType = isValid ? "success" : "error";
-    var status = isValid ? "success" : "error";
+    if (isValid) {
+        /** Если он прошел все правила и длина строки = 0 - значит поле optional, соответственно messageType = info*/
+        if (value.length != 0) {
+            description = __.t("tooltipDescriptionTrue", { attribute: label });
+            messageType = "success";
+        }
+    }
+    else {
+        /** error description формируется в рулах */
+        messageType = "error";
+    }
     return {
         tooltipValidated: __assign({}, tooltip, { description: description,
             messageType: messageType }),
-        status: status,
         isValid: isValid
     };
 };
 
 var InputStyleOne = function (props) {
     var _a = React.useState({
-        enabled: true,
         isVisible: false,
         title: "",
         description: "",
+        descriptions: {
+            info: null,
+            error: null,
+            success: null
+        },
         messageType: "info"
     }), tooltip = _a[0], setTooltip = _a[1];
-    var _b = React.useState("info"), status = _b[0], setStatus = _b[1];
     React.useEffect(function () {
-        if (!props.tooltip) {
-            setTooltip(__assign({}, tooltip, { description: __.t("tooltipDescription", { attribute: props.label }), title: props.label }));
-            var value_1 = props.value, rules = props.rules;
-            if (value_1 && rules) {
-                validateRules(rules, value_1);
-            }
+        /** Rewrite from default custom infoDescription if needed */
+        setTooltip(__assign({}, tooltip, { description: props.infoDescription
+                ? props.infoDescription
+                : __.t("tooltipDescription", { attribute: props.label }), title: props.label }));
+        var value = props.value, rules = props.rules;
+        if (value && rules) {
+            validateRules(rules, value);
         }
     }, []);
     //Вынес в отдельную ф-ю, т.к будет вызызаться в случаях если value уже существует
     var validateRules = function (rules, value, validateAfter) {
         if (validateAfter === void 0) { validateAfter = 0; }
-        var _a = validateInput(rules, value, tooltip, props.label, validateAfter), tooltipValidated = _a.tooltipValidated, isValid = _a.isValid, status = _a.status;
-        setStatus(status);
+        var _a = validateInput(rules, value, tooltip, props.label, validateAfter), tooltipValidated = _a.tooltipValidated, isValid = _a.isValid;
         setTooltip(tooltipValidated);
         return isValid;
     };
@@ -386,11 +415,11 @@ var InputStyleOne = function (props) {
     };
     var handleFocus = function (e) {
         e.preventDefault();
-        setTooltip(__assign({}, tooltip, { isVisible: true, messageType: status }));
+        setTooltip(__assign({}, tooltip, { isVisible: true, messageType: tooltip.messageType }));
     };
     var handleBlur = function (e) {
         e.preventDefault();
-        setTooltip(__assign({}, tooltip, { isVisible: false, messageType: status }));
+        setTooltip(__assign({}, tooltip, { isVisible: false, messageType: tooltip.messageType }));
     };
     var renderInput = function (layout) {
         if (layout === void 0) { layout = null; }
@@ -415,13 +444,13 @@ var InputStyleOne = function (props) {
         if (layout == "one") {
             if (props.inputType == "select") {
                 // todo: nado kak nit' ne poboyatsya sdelat' prosto merge s MadSelect Componentom (<MadSekect {...props.selectOptions}>)
-                var _a = props.selectOptions, options = _a.options, onChange = _a.onChange, value_2 = _a.value, isClearable = _a.isClearable, onInputChange_1 = _a.onInputChange, loading = _a.loading, noOptionsMessage = _a.noOptionsMessage;
+                var _a = props.selectOptions, options = _a.options, onChange = _a.onChange, value_1 = _a.value, isClearable = _a.isClearable, onInputChange_1 = _a.onInputChange, loading = _a.loading, noOptionsMessage = _a.noOptionsMessage;
                 var handleChange_1 = props.handleChange;
                 var selectedValue = null;
-                if (_.find(options, { value: value_2 })) {
+                if (_.find(options, { value: value_1 })) {
                     selectedValue = {
-                        value: value_2,
-                        label: _.find(options, { value: value_2 }) ? _.find(options, { value: value_2 }).label : ""
+                        value: value_1,
+                        label: _.find(options, { value: value_1 }) ? _.find(options, { value: value_1 }).label : ""
                     };
                 }
                 return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
@@ -442,7 +471,7 @@ var InputStyleOne = function (props) {
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement("input", { name: props.name, type: props.inputType, onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, className: "input-control-s", placeholder: props.label, value: props.value, autoComplete: props.autoComplete })),
                 React__default.createElement("div", { className: "input__item-status" },
-                    React__default.createElement(ImgIcon, { messageType: status }))));
+                    React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))));
         }
         if (props.inputType == "password") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
@@ -451,7 +480,7 @@ var InputStyleOne = function (props) {
                     React__default.createElement(React__default.Fragment, null,
                         React__default.createElement("input", { name: props.name, type: props.inputType, autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.label, value: props.value, disabled: props.disabled }),
                         React__default.createElement("div", { className: "mad-form-status" },
-                            React__default.createElement(ImgIcon, { messageType: status }))))));
+                            React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
         if (props.inputType == "textArea") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
@@ -460,7 +489,7 @@ var InputStyleOne = function (props) {
                     React__default.createElement(React__default.Fragment, null,
                         React__default.createElement(Textarea, { className: "mad-form-control", name: props.name, value: props.value, autoComplete: props.autoComplete, onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, disabled: props.disabled, minRows: props.minRows ? props.minRows : 3, maxRows: props.maxRows ? props.maxRows : 10 }),
                         React__default.createElement("div", { className: "mad-form-status" },
-                            React__default.createElement(ImgIcon, { messageType: status }))))));
+                            React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
         if (props.inputType == "datePicker") {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
@@ -471,15 +500,15 @@ var InputStyleOne = function (props) {
                                 return props.handleChange({ value: moment(day).unix(), name: props.name, isValid: true, label: null });
                             }, value: props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : "", format: "DD MMMM YYYY", dayPickerProps: __assign({ locale: "ru", localeUtils: MomentLocaleUtils, name: name }, props.datePickerOptions) }),
                         React__default.createElement("div", { className: "mad-form-status" },
-                            React__default.createElement(ImgIcon, { messageType: status }))))));
+                            React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
         if (props.inputType == "select") {
-            var _b = props.selectOptions, options = _b.options, onChange = _b.onChange, value_3 = _b.value, isClearable = _b.isClearable, onInputChange_2 = _b.onInputChange, loading = _b.loading, noOptionsMessage = _b.noOptionsMessage;
+            var _b = props.selectOptions, options = _b.options, onChange = _b.onChange, value_2 = _b.value, isClearable = _b.isClearable, onInputChange_2 = _b.onInputChange, loading = _b.loading, noOptionsMessage = _b.noOptionsMessage;
             var selectedValue = null;
-            if (_.find(options, { value: value_3 })) {
+            if (_.find(options, { value: value_2 })) {
                 selectedValue = {
-                    value: value_3,
-                    label: _.find(options, { value: value_3 }) ? _.find(options, { value: value_3 }).label : ""
+                    value: value_2,
+                    label: _.find(options, { value: value_2 }) ? _.find(options, { value: value_2 }).label : ""
                 };
             }
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
@@ -502,18 +531,16 @@ var InputStyleOne = function (props) {
                     React__default.createElement(React__default.Fragment, null,
                         React__default.createElement(NumberFormat, { name: props.name, className: "mad-form-control", onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, value: props.value, disabled: props.disabled, suffix: suffix, mask: mask, format: format, type: type, thousandSeparator: thousandSeparator, onValueChange: function (values) { return handleValueChange(values, props.validateAfter); }, decimalScale: 2 }),
                         React__default.createElement("div", { className: "mad-form-status" },
-                            React__default.createElement(ImgIcon, { messageType: status }))))));
+                            React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
         // если inputType не указан то считать поумолчанию inputType=text
         return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
             React__default.createElement(Label, null),
             React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                 React__default.createElement(React__default.Fragment, null,
-                    React__default.createElement("input", { name: props.name, 
-                        // type={this.props.inputType}
-                        autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e, props.validateAfter); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : props.label, value: props.value, disabled: props.disabled }),
+                    React__default.createElement("input", { name: props.name, autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e, props.validateAfter); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : props.label, value: props.value, disabled: props.disabled }),
                     React__default.createElement("div", { className: "mad-form-status" },
-                        React__default.createElement(ImgIcon, { messageType: status }))))));
+                        React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
     };
     return React__default.createElement(reactI18next.I18nextProvider, { i18n: __ }, renderInput(props.layout));
 };

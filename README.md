@@ -31,12 +31,7 @@ $ npm install input-style-one
   + `placeholder?` - equals to `label` by default.
   + `minRows?` - minRow prop of text area autosize package. Will be moved to `textAreaOptions` in the future
   + `maxRows?` - maxRow prop of text area autosize package. Will be moved to `textAreaOptions` in the future
-  + `tooltip?: {
-      enabled: boolean
-      isVisible: boolean
-      title: string
-      description: string
-    }` - tooltip object with props. Will be changed to another logic next future
+  + `infoDescription?` - pass "Custom information" message to tooltip if needed
   + `iconUrl?` - used only when `layout="one"` and `inputType="text"`
   + `rules` - Array of rules where input value should be validated. Available rules:
     + `required`
@@ -49,7 +44,28 @@ $ npm install input-style-one
     + `[minAmountValue, <number>]` - specific rule where minimal amount validated
     + `[lte, <number>]` - check whenever input value less or equal than specific number 
     + `[gte, <number>]` - check whenever input value greater or equal than specific number
-    + Now we have following rules but they will grow in the future
+    + `[custom, <function>]` - check whenever custom validation is realized. example:
+      ```javascript
+      const validateUsernameExist = (value) => {
+        const existUser = "example@example.com"
+        if (value == existUser) {
+          return {
+            isValid: false,
+            description: "This user is already exist in system"
+          }
+        } else {
+          return {
+            isValid: true,
+            description: "All is Fine"
+          }
+        }
+      }
+
+      ...
+      rules={['required', 'email', ['custom', validateUsernameExist]]}
+
+      ```
+    + Now we have following rules but they will grow in the future 😆
   + `datePickerOptions` - all props related to DayPickerInput packages. All available props see ["react-day-picker"](https://www.npmjs.com/package/react-day-picker) package. Example: `disabledDays`, `initialMonth`
   + `selectOptions` - all props related to ReactSelect packages. All available props see ["react-select"](https://www.npmjs.com/package/react-select) packages. Example: `options`, `value`, `isClearable` 
 

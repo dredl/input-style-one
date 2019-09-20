@@ -23,6 +23,21 @@ const App: React.FC = () => {
     newArr[key] = { value, isValid }
     setGrainReceipts(newArr)
   }
+  const validateWebsite = value => {
+    if (value == "kot") {
+      return {
+        isValid: false,
+        description: "This is custom error description and validation of inputstyleone "
+      }
+    }
+    return {
+      isValid: true,
+      description: "All is Fine"
+    }
+  }
+
+  const submitSomething = () => {}
+
   return (
     <div className="App">
       <header className="App-header">
@@ -32,12 +47,14 @@ const App: React.FC = () => {
         <div className="App-panel">
           <InputStyleOne
             name="receipt"
+            infoDescription="Custom Info Description"
             // enableTooltip={false}
             label="website"
             value={website.value}
             handleChange={({ value, isValid }) => setWebsite({ value, isValid })}
-            rules={["url", "required"]}
+            rules={["required", "url", ["custom", validateWebsite]]}
           />
+          <button onClick={submitSomething}>Submit</button>
           {grainReceipts.map((gr, key) => {
             return (
               <InputStyleOne

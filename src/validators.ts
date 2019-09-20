@@ -1,22 +1,25 @@
 import __ from "i18next"
 import validator from "validator"
 interface ITooltip {
-  enabled: boolean
   isVisible: boolean
   title: string
   description: string
+  infoDescription?: string
   messageType: string
 }
 export const validateInput = (
   rules: Array<string | [any]> = [],
   value: any,
-  tooltip: ITooltip,
+  tooltip: any,
   label: string,
   validateAfter = 0
 ) => {
-  let description = __.t("tooltipDescriptionTrue", { attribute: label })
+  /** Если поле не required и он пустой, то по умолчанию должно быть messageType и description = info, а потом уже срабатывают другие rules */
+  let description = __.t("tooltipDescription", { attribute: label })
+  let messageType = "info"
   let isValid = true
   value = value.toString()
+  /** Можно указать с какого момента надо  */
   if (value.length >= validateAfter) {
     rules.forEach(rule => {
       switch (true) {
@@ -61,16 +64,24 @@ export const validateInput = (
               }
               break
             case "url":
-              if (!validator.isURL(value)) {
+              if (!validator.isEmpty(value) && !validator.isURL(value)) {
                 description = "Поле не является правильным сайтом"
                 isValid = false
               }
               break
+            default:
           }
           break
 
         case Array.isArray(rule):
           switch (rule[0]) {
+            case "custom":
+              const result = rule[1](value)
+              if (!result.isValid) {
+                description = result.description
+                isValid = false
+              }
+              break
             case "maxString":
               if (!validator.isLength(value, { max: rule[1] })) {
                 description = "Превышено максимальное количество символов - " + rule[1]
@@ -112,13 +123,20 @@ export const validateInput = (
         ...tooltip,
         messageType: "info"
       },
-      status: "info",
       isValid
     }
   }
 
-  const messageType = isValid ? "success" : "error"
-  const status = isValid ? "success" : "error"
+  if (isValid) {
+    /** Если он прошел все правила и длина строки = 0 - значит поле optional, соответственно messageType = info*/
+    if (value.length != 0) {
+      description = __.t("tooltipDescriptionTrue", { attribute: label })
+      messageType = "success"
+    }
+  } else {
+    /** error description формируется в рулах */
+    messageType = "error"
+  }
 
   return {
     tooltipValidated: {
@@ -126,7 +144,6 @@ export const validateInput = (
       description,
       messageType
     },
-    status,
     isValid
   }
 }
