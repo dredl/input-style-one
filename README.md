@@ -15,7 +15,7 @@ $ npm install input-style-one
 
 ## Props
 + `@required`
-  + `label` - Label text above the input tag
+  + `label` - set text above the input tag, placeholder if `placeholder` not set and used in tooltip header. Set `showLabel = false` if you need to hide text above input. 
   + `name` - name property of input tag
   + `handleChange({name, value, label, isValid} => void)` - HandleChange event of input. 
     + `value` - value of input tag
@@ -23,8 +23,10 @@ $ npm install input-style-one
     + `label` - used only when `inputType="select"`. this value return the select component label. Sometimes it is necessary to store the label of selected value. Example: `selectOptions: [{value:1, label: "Option One"}, {value: "2", label: "Options Two"}]`
     + `isValid` - return `true` if input satisfy all rules.
 + `@optional`
-  + `layout?` - `null` by default. It means that component always keep structure [`label` `input`]. If `layout="one"`, `label` above `input` will be hidden, `input` field will be with icon `iconUrl` property 
+  + `layout?` - `@deprecated`. It means that component always keep structure [`label` `input`]. If `layout="one"`, `label` above `input` will be hidden, `input` field will be with icon `iconUrl` property 
   + `enableTooltip?` - `true` by default. Enable or dirable left side Popover
+  + `showLabel?` - `true` by default. Show or hide `label` text above input.
+  + `showOptionalLabel?` - `true` by default. Show or hide "optional" text in `label` no matter `required` rule is accepted.
   + `inputType?` - `text` by default. Available options: `select`, `password`, `textArea`, `datePicker` and `numberFormat`
   + `disabled?` - `false` by default. Set this prop `true` whenever input should be sidabled
   + `autocomplete?` - `true` by default. Set this prop `true` whenever html `autocomplete` property should be enabled/disabled
@@ -68,5 +70,6 @@ $ npm install input-style-one
     + Now we have following rules but they will grow in the future 😆
   + `datePickerOptions` - all props related to DayPickerInput packages. All available props see ["react-day-picker"](https://www.npmjs.com/package/react-day-picker) package. Example: `disabledDays`, `initialMonth`
   + `selectOptions` - all props related to ReactSelect packages. All available props see ["react-select"](https://www.npmjs.com/package/react-select) packages. Example: `options`, `value`, `isClearable` 
+  + `numberFormatOptions` - all props related to NumberFormat packages. All available props see ["react-number-format"](https://www.npmjs.com/package/react-number-format) package. Example: `suffix`, `thousandSeparator`, `format`, `mask`, `type`, `allowNegative`, `allowZeroStart`
 
 ### The are a little ["demo"](https://codesandbox.io/s/relaxed-hermann-emf7d) how to use InputStyleOne component in project. In basic issues, **IT'S RECOMMENDED** to use functions (`handleChange`, `isValidFields`) described in demo. But if you know better approach, you are welcome :) If not, just do `Ctrl+A Ctrl+C Ctrl+V` 😆

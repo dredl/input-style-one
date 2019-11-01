@@ -10,10 +10,8 @@ import MomentLocaleUtils from "react-day-picker/moment"
 import "react-day-picker/lib/style.css"
 import MadSelect from "./select"
 import NumberFormat from "react-number-format"
-import { I18nextProvider, Trans } from "react-i18next"
+import { I18nextProvider } from "react-i18next"
 import translations from "./i18n"
-import RedSupCross from "../assets/RedSupCross.svg"
-import GreenSupGal from "../assets/GreenSupGal.svg"
 import { validateInput } from "./validators"
 interface handleParams {
   value: any
@@ -29,6 +27,9 @@ interface IInputStyleOne {
   handleChange(args: handleParams): void
 
   //optional
+  /**
+   * @deprecated just remove this props and everything will be ok :)
+   */
   layout?: string
   enableTooltip?: boolean
   inputType?: string
@@ -37,6 +38,8 @@ interface IInputStyleOne {
   placeholder?: string
   minRows?: number
   maxRows?: number
+  showLabel?: boolean
+  showOptionalLabel?: boolean
   // tooltip?: {
   //   isVisible: boolean
   //   /** Заголовок подсказчика */
@@ -54,6 +57,23 @@ interface IInputStyleOne {
 }
 
 const InputStyleOne: React.FC<IInputStyleOne> = props => {
+  const {
+    showLabel = true,
+    showOptionalLabel = true,
+    inputType,
+    label,
+    name,
+    value,
+    infoDescription = null,
+    disabled,
+    placeholder,
+    enableTooltip = true,
+    validateAfter,
+    selectOptions = null,
+    datePickerOptions = null,
+    numberFormatOptions = null,
+    autoComplete = "off"
+  } = props
   const [tooltip, setTooltip] = useState({
     isVisible: false,
     title: "",
@@ -70,16 +90,20 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     /** Rewrite from default custom infoDescription if needed */
     setTooltip({
       ...tooltip,
-      description: props.infoDescription
-        ? props.infoDescription
-        : __.t("tooltipDescription", { attribute: props.label }),
-      title: props.label
+      description: infoDescription ? infoDescription : __.t("tooltipDescription", { attribute: label }),
+      title: label
     })
     const { value, rules } = props
-
-    if (value && !rules) {
+    // для управления событиями в select-е
+    if (selectOptions && selectOptions.value) {
+      setTooltip({
+        ...tooltip,
+        description: infoDescription ? infoDescription : __.t("tooltipDescription", { attribute: label }),
+        title: label,
+        messageType: "success"
+      })
     }
-
+    /** Если изначално есть какое нибудь значение и правила сразу провести валидацию */
     if (value && rules) {
       validateRules(rules, value)
     }
@@ -87,7 +111,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
 
   //Вынес в отдельную ф-ю, т.к будет вызызаться в случаях если value уже существует
   const validateRules = (rules, value, validateAfter = 0) => {
-    const { tooltipValidated, isValid } = validateInput(rules, value, tooltip, props.label, validateAfter)
+    const { tooltipValidated, isValid } = validateInput(rules, value, tooltip, label, validateAfter)
     setTooltip(tooltipValidated)
     return isValid
   }
@@ -100,10 +124,10 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
   }
 
   // cb ф-я NurmerFormat, вынес отдельно т.к отличается передаваемые параметры
-  const handleValueChange = (values, validateAfter = 0) => {
+  const handleValueChange = (values, name, validateAfter = 0) => {
     const { value } = values
     const isValid = validateRules(props.rules, value, validateAfter)
-    props.handleChange({ value, name: "whatever", label: null, isValid })
+    props.handleChange({ value, name, label: null, isValid })
   }
 
   const handleFocus = e => {
@@ -116,289 +140,244 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     setTooltip({ ...tooltip, isVisible: false, messageType: tooltip.messageType })
   }
 
-  const renderInput = (layout = null) => {
-    const ImgIcon = ({ messageType }) => {
-      if (messageType == "error") {
-        return <img src={RedSupCross} alt="" />
-      }
-
-      if (messageType == "success") {
-        return <img src={GreenSupGal} alt="" />
-      }
-
-      return <img src="" alt="" />
+  const renderInput = () => {
+    const Status = ({ messageType }) => {
+      if (messageType == "error") return <span className="mad-form__status mad-form__status-error" />
+      if (messageType == "success") return <span className="mad-form__status mad-form__status-success" />
+      return <span className="mad-form__status mad-form__status-info" />
     }
-
-    const Label = () => {
-      if (_.indexOf(props.rules, "required") > -1) {
-        return <label className="mad-form-label">{props.label}</label>
+    const Icon = () => {
+      if (!props.iconUrl) {
+        return <></>
       }
-
       return (
-        <div className="mad-form-labels">
-          <label className="mad-form-label">{props.label}</label>
-          <span className="mad-form-optional">{__.t("optional")}</span>
-        </div>
+        <>
+          <img className="mad-form__icon" src={props.iconUrl} alt="" />
+          <span className="mad-form__delimeter" />
+        </>
       )
     }
 
-    if (layout == "one") {
-      if (props.inputType == "select") {
-        // todo: nado kak nit' ne poboyatsya sdelat' prosto merge s MadSelect Componentom (<MadSekect {...props.selectOptions}>)
-        const { options, onChange, value, isClearable, onInputChange, loading, noOptionsMessage } = props.selectOptions
-        const { handleChange } = props
-        let selectedValue = null
-        if (_.find(options, { value })) {
-          selectedValue = {
-            value: value,
-            label: _.find(options, { value }) ? _.find(options, { value }).label : ""
-          }
-        }
-
+    switch (inputType) {
+      case "password": {
         return (
-          <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-            <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-              <MadSelect
-                name={props.name}
-                isClearable={isClearable}
-                onFocus={e => handleFocus(e)}
-                onBlur={e => handleBlur(e)}
-                options={options}
-                noOptionsMessage={noOptionsMessage}
-                onChange={(value, name) =>
-                  props.handleChange({
-                    value: value ? value.value : "",
-                    name,
-                    label: value ? value.label : null,
-                    isValid: !!value
-                  })
-                }
-                placeholder={props.placeholder}
-                value={selectedValue}
-                onInputChange={onInputChange ? value => onInputChange(value) : null}
-                isDisabled={props.disabled}
-                loading={loading}
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div className="mad-form__input" tabIndex={-1}>
+              <input
+                name={name}
+                type={inputType}
+                autoComplete={autoComplete}
+                className="mad-form-control"
+                onChange={e => handleChange(e, validateAfter)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                placeholder={label}
+                value={value}
+                disabled={disabled}
               />
-            </MadTooltip>
-          </div>
+              <Status messageType={tooltip.messageType} />
+            </div>
+          </MadTooltip>
         )
       }
-      return (
-        <div className="input__item">
-          <div className="input__item-icon icons">
-            {props.iconUrl && (
-              <>
-                <img src={props.iconUrl} alt="" />
-                <span />
-              </>
-            )}
-          </div>
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <input
-              name={props.name}
-              type={props.inputType}
-              onChange={(e: any) => handleChange(e)}
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              className="input-control-s"
-              placeholder={props.label}
-              value={props.value}
-              autoComplete={props.autoComplete}
-            />
-          </MadTooltip>
-          <div className={"input__item-status"}>
-            <ImgIcon messageType={tooltip.messageType} />
-          </div>
-        </div>
-      )
-    }
-
-    if (props.inputType == "password") {
-      return (
-        <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-          <Label />
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <>
-              <input
-                name={props.name}
-                type={props.inputType}
-                autoComplete={props.autoComplete}
-                className="mad-form-control"
-                onChange={(e: any) => handleChange(e)}
-                onFocus={e => handleFocus(e)}
-                onBlur={e => handleBlur(e)}
-                placeholder={props.label}
-                value={props.value}
-                disabled={props.disabled}
-              />
-              <div className="mad-form-status">
-                <ImgIcon messageType={tooltip.messageType} />
-              </div>
-            </>
-          </MadTooltip>
-        </div>
-      )
-    }
-
-    if (props.inputType == "textArea") {
-      return (
-        <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-          <Label />
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <>
+      case "textArea": {
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div className="mad-form__input mad-form__input-textarea" tabIndex={-1}>
               <Textarea
-                className="mad-form-control"
-                name={props.name}
-                value={props.value}
+                className="mad-form__control"
+                name={name}
+                value={value}
                 autoComplete={props.autoComplete}
                 onChange={e => handleChange(e)}
                 onFocus={e => handleFocus(e)}
                 onBlur={e => handleBlur(e)}
-                placeholder={props.placeholder ? props.placeholder : "Заполните " + props.label}
-                disabled={props.disabled}
-                minRows={props.minRows ? props.minRows : 3}
+                placeholder={placeholder ? placeholder : "Заполните " + label}
+                disabled={disabled}
+                minRows={props.minRows ? props.minRows : 3} //todo
                 maxRows={props.maxRows ? props.maxRows : 10}
               />
 
-              <div className="mad-form-status">
-                <ImgIcon messageType={tooltip.messageType} />
-              </div>
-            </>
+              <Status messageType={tooltip.messageType} />
+            </div>
           </MadTooltip>
-        </div>
-      )
-    }
-
-    if (props.inputType == "datePicker") {
-      return (
-        <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-          <Label />
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <div onFocus={e => handleFocus(e)} onBlur={e => handleBlur(e)}>
+        )
+      }
+      case "datePicker": {
+        const overlayPosition = datePickerOptions
+          ? datePickerOptions.overlayPosition
+            ? datePickerOptions.overlayPosition
+            : "bottom"
+          : "bottom"
+        const handleChange = day => {
+          setTooltip({ ...tooltip, ...{ messageType: day ? "success" : "info" } })
+          props.handleChange({
+            value: moment(day).unix() - 12 * 3600, //когда происходит конвертация с дня на unix time, почему то добавляется 12 часов
+            name: name,
+            isValid: true,
+            label: null
+          })
+        }
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              tabIndex={-1}
+              style={{ outline: "none", borderColor: "transparent" }}
+            >
               <DayPickerInput
+                classNames={{
+                  container: "DayPickerInput mad-form__input",
+                  overlayWrapper: "DayPickerInput-OverlayWrapper",
+                  overlay: "DayPickerInput-Overlay" + (overlayPosition == "top" ? " DayPickerInput-Overlay--top" : "") // The overlay's container
+                }}
                 onBlur={e => handleBlur(e)}
-                placeholder={props.placeholder ? props.placeholder : "Выберите дату"}
-                inputProps={{ readOnly: true, name: props.name }}
-                onDayChange={day =>
-                  props.handleChange({ value: moment(day).unix(), name: props.name, isValid: true, label: null })
-                }
-                value={props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : ""}
+                placeholder={placeholder ? placeholder : "Выберите дату"}
+                inputProps={{ readOnly: true, name: name, disabled }}
+                onDayChange={day => handleChange(day)}
+                value={value ? moment(value * 1000).format("DD MMMM YYYY") : ""}
                 format="DD MMMM YYYY"
+                // showOverlay={true}
                 dayPickerProps={{
                   locale: "ru",
                   localeUtils: MomentLocaleUtils,
                   name,
-                  ...props.datePickerOptions
+                  ...datePickerOptions
                 }}
               />
-              <div className="mad-form-status">
-                <ImgIcon messageType={tooltip.messageType} />
-              </div>
+              <Status messageType={tooltip.messageType} />
             </div>
           </MadTooltip>
-        </div>
-      )
-    }
-
-    if (props.inputType == "select") {
-      const { options, onChange, value, isClearable, onInputChange, loading, noOptionsMessage } = props.selectOptions
-      let selectedValue = null
-      if (_.find(options, { value })) {
-        selectedValue = {
-          value: value,
-          label: _.find(options, { value }) ? _.find(options, { value }).label : ""
-        }
+        )
       }
+      case "select": {
+        const { options, value, isClearable, onInputChange, loading, noOptionsMessage } = selectOptions
 
-      return (
-        <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-          <Label />
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <MadSelect
-              name={props.name}
-              isClearable={isClearable}
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              options={options}
-              placeholder={props.placeholder}
-              noOptionsMessage={noOptionsMessage}
-              onChange={(value, name) =>
-                props.handleChange({
-                  value: value ? value.value : "",
-                  name,
-                  label: value ? value.label : null,
-                  isValid: !!value
-                })
-              }
-              value={selectedValue}
-              onInputChange={onInputChange ? value => onInputChange(value) : null}
-              isDisabled={props.disabled}
-              loading={loading}
-            />
+        const handleChange = ({ value, name }) => {
+          setTooltip({ ...tooltip, ...{ messageType: value && value.value ? "success" : "info" } })
+          props.handleChange({
+            value: value ? value.value : "",
+            name,
+            label: value ? value.label : null,
+            isValid: !!value
+          })
+        }
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div tabIndex={-1}>
+              <MadSelect
+                name={name}
+                isClearable={isClearable}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                options={options}
+                placeholder={placeholder}
+                noOptionsMessage={noOptionsMessage}
+                onChange={(value, name) => handleChange({ value, name })}
+                value={options.find(option => option.value == value)}
+                onInputChange={onInputChange ? value => onInputChange(value) : null}
+                isDisabled={disabled}
+                loading={loading}
+              />
+            </div>
           </MadTooltip>
-        </div>
-      )
-    }
-
-    if (props.inputType == "numberFormat") {
-      const { suffix, thousandSeparator, format, mask, type } = props.numberFormatOptions
-      return (
-        <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-          <Label />
-          <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-            <>
+        )
+      }
+      case "numberFormat": {
+        const {
+          suffix,
+          thousandSeparator,
+          format,
+          mask,
+          type,
+          allowNegative = false,
+          allowZeroStart = false
+        } = numberFormatOptions
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div className="mad-form__input" tabIndex={-1}>
               <NumberFormat
-                name={props.name}
-                className="mad-form-control"
-                onFocus={e => handleFocus(e)}
-                onBlur={e => handleBlur(e)}
-                placeholder={props.placeholder ? props.placeholder : "Заполните " + props.label}
-                value={props.value}
-                disabled={props.disabled}
+                name={name}
+                className="mad-form__control"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                placeholder={placeholder ? placeholder : "Заполните " + label}
+                value={value}
+                disabled={disabled}
                 suffix={suffix}
                 mask={mask}
+                allowNegative={allowNegative}
+                //todo: nado dovesty etu temu do uma tk esy ya napiwu "-0" ona ego propustit nu i drugie vozmohznie problemy
+                isAllowed={values => allowZeroStart || !values.value.startsWith("0")}
                 format={format}
                 type={type}
                 thousandSeparator={thousandSeparator}
-                onValueChange={values => handleValueChange(values, props.validateAfter)}
+                onValueChange={values => handleValueChange(values, name, validateAfter)}
                 decimalScale={2}
               />
-
-              <div className="mad-form-status">
-                <ImgIcon messageType={tooltip.messageType} />
-              </div>
-            </>
+              <Status messageType={tooltip.messageType} />
+            </div>
           </MadTooltip>
+        )
+      }
+      default: {
+        /**
+         * если inputType не указан то считать поумолчанию inputType=text
+         * tabIndex = -1 нужно чтобы при нажатии Tab он делал фокус не не mad-form__input
+         * (ему tabIndex = 0 присваивает TippyJS) а на следующий input
+         */
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div className="mad-form__input" tabIndex={-1}>
+              <Icon />
+              <input
+                tabIndex={0}
+                name={name}
+                autoComplete={props.autoComplete}
+                className="mad-form__control"
+                onChange={e => handleChange(e, validateAfter)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                placeholder={placeholder ? placeholder : label}
+                value={value}
+                disabled={disabled}
+              />
+              <Status messageType={tooltip.messageType} />
+            </div>
+          </MadTooltip>
+        )
+      }
+    }
+  }
+  const Label = () => {
+    if (!showLabel) {
+      return <></>
+    }
+    /** Если поле обязательно. Надпись "необязательно" не добавляем */
+    if (_.indexOf(props.rules, "required") > -1) {
+      return (
+        <div className="mad-form__label">
+          <label>{label}</label>
         </div>
       )
     }
-    // если inputType не указан то считать поумолчанию inputType=text
+
     return (
-      <div className={"mad-form-group" + (props.disabled ? " disabled" : "")}>
-        <Label />
-        <MadTooltip data={tooltip} enabled={props.enableTooltip}>
-          <>
-            <input
-              name={props.name}
-              autoComplete={props.autoComplete}
-              className="mad-form-control"
-              onChange={(e: any) => handleChange(e, props.validateAfter)}
-              onFocus={e => handleFocus(e)}
-              onBlur={e => handleBlur(e)}
-              placeholder={props.placeholder ? props.placeholder : props.label}
-              value={props.value}
-              disabled={props.disabled}
-            />
-            <div className="mad-form-status">
-              <ImgIcon messageType={tooltip.messageType} />
-            </div>
-          </>
-        </MadTooltip>
+      <div className="mad-form__label">
+        <label>{label}</label>
+        {showOptionalLabel && <span className="mad-form-optional">{__.t("optional")}</span>}
       </div>
     )
   }
-
-  return <I18nextProvider i18n={translations}>{renderInput(props.layout)}</I18nextProvider>
+  /** NOTE: не пытайтесь вытащить MadTootip сюда т.к. у это компонента должен быть только один child. в нашем случае mad-form__input */
+  return (
+    <I18nextProvider i18n={translations}>
+      <div className={"mad-form" + (disabled ? " mad-form--disabled" : "")}>
+        <Label />
+        {renderInput()}
+      </div>
+    </I18nextProvider>
+  )
 }
-
 export default InputStyleOne

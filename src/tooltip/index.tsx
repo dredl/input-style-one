@@ -1,6 +1,6 @@
 import React, { Component, Fragment, FC } from "react"
 import Tippy from "@tippy.js/react"
-import "tippy.js/dist/tippy.css"
+import "tippy.js/index.css"
 import "./index.scss"
 import __ from "i18next"
 //nuzhno otrefactorit'
@@ -16,7 +16,7 @@ const MadTooltip: FC<any> = ({ children, data, enabled }) => {
       </div>
     </Fragment>
   )
-  if (enabled == undefined) {
+  if (enabled) {
     return (
       <Tippy
         content={Content}

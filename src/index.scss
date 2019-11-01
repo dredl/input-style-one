@@ -13,205 +13,140 @@
 	@content
   }
 }
+$input-padding: 8px;
+
 .mad-form {
-  &-cd {
 	display: flex;
-	margin-top: 3px;
-	span {
-	  font-size: 13px;
-	  display: flex;
-	  align-items: center;
-	  cursor: pointer;
-	  img {
-		padding-right: 5px;
-		width: 16px;
-		height: 16px;
-	  }
-	}
-	.addBlock {
-	  margin-right: 15px;
-	  color: #5cba51;
-	}
-	.removeBlock {
-	  color: #ff0000;
-	}
-  }
-  &-labels {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-  }
-  &-optional {
-	font-size: 13px;
-	font-family: $font_med;
-	color: #CCCCCC;
-	margin-bottom: 5px;
-	line-height: 1;
-  }
-  &-group {
-	position: relative;
-	display: flex;
-	flex: 1;
 	flex-direction: column;
 	line-height: 1;
 	margin-bottom: 10px;
-	.mad-form-label {
-	  font-size: 15px;
-	  align-self: flex-start;
-	  font-family: $font_med;
+	&--disabled {
+		
+		.mad-form__input {
+			background: #f2f2f2;
+			&:focus-within {
+				border-color: #B3B3B3;
+			}
+		}
+	}
+	&__input {
+		display: flex;
+		align-items: center;
+		border: 2px solid #B3B3B3;
+		border-radius: 4px;
+		padding: 0 $input-padding;
+		height: 36px; //36px height + 2 border top + 2px border-bottom = 40px
+		&-textarea {
+			height: 100%;
+			padding-bottom: 5px;
+			textarea {
+				resize: none;
+				height: -webkit-fill-available;
+				line-height: 1.3;
+			}
+			
+		}
+		.DayPickerInput-Overlay--top {
+			bottom: 40px;
+			left: -$input-padding;
+		}
+		&.DayPickerInput {
+			width: -webkit-fill-available;
+			// raspologaet kalendar nad inputom
+			
+			input {//poka prixoditsya dublirovat' s mad-form__control
+				width: -webkit-fill-available;
+				padding: 7px 0;
+				font-size: 16px;
+				color: black;
+				font-family: $font_bold;
+				background-color: #fff;
+				border: none;
+				margin-top: 1px; //kostilek no rabo4y
+				@include placeholder {
+					color: #B3B3B3;
+					font-family: $font_med;
+				}
+				transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+				&:focus {
+					outline: 0;
+					border-color: #808080;
+				}
+				&:disabled {
+					background-color: rgb(242, 242, 242);
+					color: #999999;
+				}
+			}
+		}
+		&:focus-within {
+			border-color: #808080;
+			outline-color: transparent;
+		}
+	}
+	&__label {
+		display: flex;
+		justify-content: space-between;  
 	  color: #4B4B4D;
-	  margin-bottom: 5px;
-	}
-	$font_size: 16px;
+		margin-bottom: 5px;
 
-	.DayPickerInput {
-	  width: 100%;
-	}
-	textarea.mad-form-control {
-		width: -webkit-fill-available;
-		line-height: 1.3;
-		resize: none
-	}
-	.mad-form-control, .DayPickerInput input {
-	  display: block;
-	  width: -webkit-fill-available;
-	  padding: 8px 30px 8px 10px;
-	  font-size: $font_size;
-	  line-height: 1;
-	  color: black;
-	  font-family: $font_bold;
-	  background-color: #fff;
-	  background-clip: padding-box;
-	  border: 2px solid #B3B3B3;
-	  border-radius: 4px;
-	  @include placeholder {
-		color: #B3B3B3;
-		font-family: $font_med;
-	  }
-	  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	  &:focus {
-		outline: 0;
-		border-color: #808080;
-	  }
-	  &:disabled {
-		background-color: rgb(242, 242, 242);
-		color: #999999;
-	  }
-	}
-	.mad-form-input-group {
-	  width: 100%;
-	  height: $font_size + 24px;
-	  font-size: $font_size;
-	  line-height: 1.5;
-	  color: black;
-	  font-family: $font_bold;
-	  background-color: #fff;
-	  background-clip: padding-box;
-	  border: 2px solid #B3B3B3;
-	  border-radius: 4px;
-	  display: flex;
-	  @include placeholder {
-		color: #B3B3B3;
-		font-family: $font_med;
-	  }
-	  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-	  &:focus {
-		outline: 0;
-		border-color: #808080;
-	  }
-	  img {
-		width: 18px;
-		height: 18px;
-	  }
-	  .mad-form-control{
-		border: none;
-	  }
-	}
-	.mad-form-status {
-    position: absolute;
-    top: 50%;
-	  right: 14px;
-	  img {
-		width: 8px;
-	  }
-	}
-	&.disabled {
-	  .mad-form-status {
-		img {
-		  visibility: hidden;
+		label {
+			font-size: 15px;
+			font-family: $font_med;
 		}
-	  }
-	  .mad-form-label {
 		span {
-		  color: #4B4B4D;
+			font-size: 13px;
+			font-family: $font_med;
+			color: #CCCCCC;
 		}
-	  }
 	}
-  }
-  .form-row {
-	position: relative;
-  }
-}
-.input__item {
-  position: relative;
-  width: 100%;
-  // height: 40px;
-  margin-bottom: 18px;
-  display: flex;
-  .input-control-s {
-		flex-grow: 1;
-		font-family: $font_bold;
+	&__icon {
+		width: 18px;
+		padding: 7px 0;
+	}
+	&__delimeter {
+		margin: 0 6px;
+    border-left: 1px solid #B3B3B3;
+    padding-top: 25px;
+	}
+	&__status {
+		width: 7px;
+		height: 7px;
+		border-radius: 100px;
+		&-error {
+			background: red;
+		}
+		&-success {
+			background: #5fbb56;
+		}
+		&-info {
+			background: transparent
+		}
+	}
+	&__control {
+		width: -webkit-fill-available;
+		padding: 7px 0;
 		font-size: 16px;
-		// height: 40px;
-		display: block;
-		background-color: white;
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
-		padding: 8px 27px 8px 10px;
-		outline: none;
-		border: {
-			top: 2px solid #B3B3B3;
-			bottom: 2px solid #B3B3B3;
-			right: 2px solid #B3B3B3;
-			left: 0 solid transparent;
+		color: black;
+		font-family: $font_bold;
+		background-color: #fff;
+		border: none;
+		@include placeholder {
+			color: #B3B3B3;
+			font-family: $font_med;
 		}
-  }
-  .input-control-s::placeholder {
-		color: #B3B3B3;
-		font-family: $font_med;
-  }
-  &-icon {
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	border: {
-	  top: 2px solid #B3B3B3;
-	  bottom: 2px solid #B3B3B3;
-	  left: 2px solid #B3B3B3;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		&:focus {
+			outline: 0;
+			border-color: #808080;
+		}
+		&:disabled {
+			background-color: rgb(242, 242, 242);
+			color: #999999;
+		}
 	}
-	position: relative;
-	// height: 40px;
-	padding: 4px 0 4px 6px;
-	align-items: center;
-	display: flex;
-	img {
-	  height: 18px;
-	  width: 18px;
-	}
-	span {
-	  margin-left: 6px;
-	  border-left: 1px solid #B3B3B3;
-	  padding-top: 25px;
-	}
-  }
-  &-status {
-	background: white;
-	position: absolute;
-	//height: 40px;
-	right: 14px;
-	top: 11px;
-	img {
-	  //height: 11px;
-	  width: 8px;
-	}
+  &-labels {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
   }
 }

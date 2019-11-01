@@ -48,20 +48,20 @@ export const validateInput = (
                 description = "Должен быть целым числом"
                 isValid = false
               }
-              if (value < 0) {
-                description = "Поле не может иметь отрицательное значение"
-                isValid = false
-              }
+              // if (value < 0) {
+              //   description = "Поле не может иметь отрицательное значение"
+              //   isValid = false
+              // }
               break
             case "float":
               if (!validator.isFloat(value) && !validator.isEmpty(value)) {
                 description = "Не является число с плавающей точкой"
                 isValid = false
               }
-              if (value < 0) {
-                description = "Поле не может иметь отрицательное значение"
-                isValid = false
-              }
+              // if (value < 0) {
+              //   description = "Поле не может иметь отрицательное значение"
+              //   isValid = false
+              // }
               break
             case "url":
               if (!validator.isEmpty(value) && !validator.isURL(value)) {

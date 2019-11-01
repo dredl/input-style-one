@@ -6,15 +6,16 @@ import "react-day-picker/lib/style.css"
 import moment from "moment"
 const App: React.FC = () => {
   const options = []
-  for (let i = 0; i < 1000; i = i + 1) {
+  for (let i = 1; i < 1000; i = i + 1) {
     options.push({ value: i, label: `Option ${i}` })
   }
   const [value, setValue] = useState("")
   const [card, setCard] = useState("")
-  const [startPrice, setStartPrice] = useState({ value: 0, isValid: false })
+  const [startPrice, setStartPrice] = useState({ value: "", isValid: false })
   const handleChange = ({ name, value }, callback, isValid) => {
-    callback(value)
+    callback({ value, isValid })
   }
+  const [phone, setPhone] = useState({ value: "+77025775735", isValid: false })
   const [grainReceipts, setGrainReceipts] = useState([{ value: "", isValid: false }, { value: "", isValid: false }])
   const [website, setWebsite] = useState({ value: "", isValid: false })
   const handleReceipts = ({ value, key }, isValid) => {
@@ -37,7 +38,7 @@ const App: React.FC = () => {
   }
 
   const submitSomething = () => {}
-
+  console.log(phone.value)
   return (
     <div className="App">
       <header className="App-header">
@@ -47,7 +48,9 @@ const App: React.FC = () => {
         <div className="App-panel">
           <InputStyleOne
             name="receipt"
+            iconUrl="../../assets/cross-imput.svg"
             infoDescription="Custom Info Description"
+            // disabled={true}
             // enableTooltip={false}
             label="website"
             value={website.value}
@@ -59,6 +62,7 @@ const App: React.FC = () => {
             return (
               <InputStyleOne
                 name="receipt"
+                key={key}
                 // enableTooltip={false}
                 label="№ зерновой расписки"
                 value={gr.value}
@@ -69,16 +73,19 @@ const App: React.FC = () => {
           })}
           <InputStyleOne
             name="startDate"
-            layout="one"
             placeholder="Выберите страну"
             // enableTooltip={false}
+            showLabel={false}
             label="Дата погрузки товара"
             inputType="select"
             value={value}
+            disabled={true}
+            infoDescription={"QUQU epta"}
             handleChange={({ value, name, label, isValid }) => console.log({ value, name, label }, isValid)}
             rules={["required"]}
             selectOptions={{
               options: options,
+              value: options[5].value,
               noOptionsMessage: "Strana ne naidena"
             }}
           />
@@ -91,6 +98,7 @@ const App: React.FC = () => {
           />
           <InputStyleOne
             inputType="numberFormat"
+            disabled={true}
             name="startPrice"
             label="Стартовая цена"
             value={startPrice.value}
@@ -98,13 +106,16 @@ const App: React.FC = () => {
             rules={["required", , "float", ["maxString", 11]]}
             numberFormatOptions={{
               suffix: " KZT",
-              thousandSeparator: true
+              thousandSeparator: true,
+              allowNegative: true,
+              allowZeroStart: false
             }}
           />
           <InputStyleOne
             inputType="numberFormat"
             handleChange={({ value, name, isValid }) => handleChange({ value, name }, setCard, isValid)}
             name="cardNumber"
+            disabled={true}
             value={card}
             label="Номер карты"
             placeholder="XXXX-XXXX-XXXX-XXXX"
@@ -116,8 +127,21 @@ const App: React.FC = () => {
             }}
           />
           <InputStyleOne
+            inputType="numberFormat"
+            handleChange={({ value, name, isValid }) => handleChange({ value, name }, setPhone, isValid)}
+            name="phoneNumber"
+            value={phone.value}
+            label="Номер телефона"
+            validateAfter={10}
+            placeholder="+7(XXX)XXX-XX-XX"
+            rules={["required", "integer"]}
+            numberFormatOptions={{
+              format: "+7(###)###-##-##",
+              mask: "_"
+            }}
+          />
+          <InputStyleOne
             name="startDate"
-            layout="one"
             iconUrl="../../assets/cross-imput.svg"
             label="Дата погрузки товара"
             value={value}
@@ -129,8 +153,11 @@ const App: React.FC = () => {
             label="Дата погрузки товара"
             inputType="textArea"
             value={value}
+            // disabled={true}
+            showLabel={false}
+            // showOptionalLabel={false}
             handleChange={({ value, isValid }) => setValue(value)}
-            // rules={["required"]}
+            rules={["required"]}
           />
           <InputStyleOne
             name="startDate"
@@ -139,9 +166,27 @@ const App: React.FC = () => {
             value={value}
             handleChange={({ value, name, isValid, label }) => console.log({ value, name, isValid, label })}
             rules={["required"]}
+            disabled={true}
             datePickerOptions={{
-              disabledDays: { before: moment(moment().add(3, "days")).toDate() }, //(day => day <= moment().add(3, "days"))
-              initialMonth: moment(moment().add(3, "days")).toDate()
+              disabledDays: [{ before: moment(moment().add(3, "days")).toDate() }, { daysOfWeek: [0, 6] }],
+              // disabledDays: { before: moment(moment().add(3, "days")).toDate() }, //(day => day <= moment().add(3, "days"))
+              initialMonth: moment(moment().add(3, "days")).toDate(),
+              overlayPosition: "top"
+            }}
+          />
+          <InputStyleOne
+            name="startDate"
+            // layout="one"
+            placeholder="Выберите страну"
+            // enableTooltip={false}
+            label="Дата погрузки товара"
+            inputType="select"
+            value={value}
+            handleChange={({ value, name, label, isValid }) => console.log({ value, name, label }, isValid)}
+            rules={["required"]}
+            selectOptions={{
+              options: options,
+              noOptionsMessage: "Strana ne naidena"
             }}
           />
         </div>

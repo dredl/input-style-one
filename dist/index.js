@@ -5,7 +5,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var Tippy = _interopDefault(require('@tippy.js/react'));
-require('tippy.js/dist/tippy.css');
+require('tippy.js/index.css');
 var _ = _interopDefault(require('lodash'));
 var __ = _interopDefault(require('i18next'));
 var Textarea = _interopDefault(require('react-textarea-autosize'));
@@ -18,7 +18,6 @@ var Select__default = _interopDefault(Select);
 var reactWindow = require('react-window');
 var NumberFormat = _interopDefault(require('react-number-format'));
 var reactI18next = require('react-i18next');
-var LanguageDetector = _interopDefault(require('i18next-browser-languagedetector'));
 var validator = _interopDefault(require('validator'));
 
 /*! *****************************************************************************
@@ -102,7 +101,7 @@ var MadTooltip = function (_a) {
     return children;
 };
 
-var css$1 = ".mad-form-cd{display:flex;margin-top:3px}.mad-form-cd span{font-size:13px;display:flex;align-items:center;cursor:pointer}.mad-form-cd span img{padding-right:5px;width:16px;height:16px}.mad-form-cd .addBlock{margin-right:15px;color:#5cba51}.mad-form-cd .removeBlock{color:red}.mad-form-labels{display:flex;justify-content:space-between;align-items:flex-end}.mad-form-optional{font-size:13px;font-family:dinpro-med;color:#ccc;margin-bottom:5px;line-height:1}.mad-form-group{position:relative;display:flex;flex:1;flex-direction:column;line-height:1;margin-bottom:10px}.mad-form-group .mad-form-label{font-size:15px;align-self:flex-start;font-family:dinpro-med;color:#4b4b4d;margin-bottom:5px}.mad-form-group .DayPickerInput{width:100%}.mad-form-group textarea.mad-form-control{width:-webkit-fill-available;line-height:1.3;resize:none}.mad-form-group .DayPickerInput input,.mad-form-group .mad-form-control{display:block;width:-webkit-fill-available;padding:8px 30px 8px 10px;font-size:16px;line-height:1;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .DayPickerInput input::-webkit-input-placeholder,.mad-form-group .mad-form-control::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-moz-placeholder,.mad-form-group .DayPickerInput input::-moz-placeholder,.mad-form-group .mad-form-control:-moz-placeholder,.mad-form-group .mad-form-control::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-ms-input-placeholder,.mad-form-group .mad-form-control:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:focus,.mad-form-group .mad-form-control:focus{outline:0;border-color:grey}.mad-form-group .DayPickerInput input:disabled,.mad-form-group .mad-form-control:disabled{background-color:#f2f2f2;color:#999}.mad-form-group .mad-form-input-group{width:100%;height:40px;font-size:16px;line-height:1.5;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;display:flex;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .mad-form-input-group::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-moz-placeholder,.mad-form-group .mad-form-input-group::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:focus{outline:0;border-color:grey}.mad-form-group .mad-form-input-group img{width:18px;height:18px}.mad-form-group .mad-form-input-group .mad-form-control{border:none}.mad-form-group .mad-form-status{position:absolute;top:50%;right:14px}.mad-form-group .mad-form-status img{width:8px}.mad-form-group.disabled .mad-form-status img{visibility:hidden}.mad-form-group.disabled .mad-form-label span{color:#4b4b4d}.input__item,.mad-form .form-row{position:relative}.input__item{width:100%;margin-bottom:18px;display:flex}.input__item .input-control-s{flex-grow:1;font-family:dinpro-bold;font-size:16px;display:block;background-color:#fff;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:8px 27px 8px 10px;outline:none;border:2px solid #b3b3b3;border-left:0 solid transparent}.input__item .input-control-s::placeholder{color:#b3b3b3;font-family:dinpro-med}.input__item-icon{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top:2px solid #b3b3b3;border-bottom:2px solid #b3b3b3;border-left:2px solid #b3b3b3;position:relative;padding:4px 0 4px 6px;align-items:center;display:flex}.input__item-icon img{height:18px;width:18px}.input__item-icon span{margin-left:6px;border-left:1px solid #b3b3b3;padding-top:25px}.input__item-status{background:#fff;position:absolute;right:14px;top:11px}.input__item-status img{width:8px}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9pbmRleC5zY3NzIiwic3JjL3N0eWxlcy9fZm9udHMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFnQkUsYUFDRCxZQUFhLENBQ2IsY0FBZSxDQUZiLGtCQUlBLGNBQWUsQ0FDZixZQUFhLENBQ2Isa0JBQW1CLENBQ25CLGNBQWUsQ0FQZixzQkFTRCxpQkFBa0IsQ0FDbEIsVUFBVyxDQUNYLFdBQVksQ0FYWCx1QkFlQSxpQkFBa0IsQ0FDbEIsYUFBYyxDQWhCZCwwQkFtQkEsU0FBYyxDQUdmLGlCQUNELFlBQWEsQ0FDYiw2QkFBOEIsQ0FDOUIsb0JBQXFCLENBRXBCLG1CQUNELGNBQWUsQ0FDZixzQkM3Q29CLENEOENwQixVQUFjLENBQ2QsaUJBQWtCLENBQ2xCLGFBQWMsQ0FFYixnQkFDRCxpQkFBa0IsQ0FDbEIsWUFBYSxDQUNiLE1BQU8sQ0FDUCxxQkFBc0IsQ0FDdEIsYUFBYyxDQUNkLGtCQUFtQixDQU5qQixnQ0FRQSxjQUFlLENBQ2YscUJBQXNCLENBQ3RCLHNCQzVEa0IsQ0Q2RGxCLGFBQWMsQ0FDZCxpQkFBa0IsQ0FabEIsZ0NBaUJBLFVBQVcsQ0FqQlgsMENBb0JELDRCQUE2QixDQUM3QixlQUFnQixDQUNoQixXQUNELENBdkJFLHdFQXlCQSxhQUFjLENBQ2QsNEJBQTZCLENBQzdCLHlCQUEwQixDQUMxQixjQWRjLENBZWQsYUFBYyxDQUNkLFVBQVksQ0FDWix1QkNoRm9CLENEaUZwQixxQkFBc0IsQ0FDdEIsMkJBQTRCLENBQzVCLHdCQUF5QixDQUN6QixpQkFBa0IsQ0FLbEIsb0VBQXdFLENBeEZ6RSw4SEFxRkEsYUFBYyxDQUNkLHNCQ3hGbUIsQ0RRbkIsc05BK0VBLGFBQWMsQ0FDZCxzQkN4Rm1CLENEV25CLG9IQTRFQSxhQUFjLENBQ2Qsc0JDeEZtQixDRGtEbEIsb0ZBMENELFNBQVUsQ0FDVixpQkFBcUIsQ0EzQ3BCLDBGQThDRCx3QkFBb0MsQ0FDcEMsVUFBYyxDQS9DYixzQ0FtREEsVUFBVyxDQUNYLFdBQXlCLENBQ3pCLGNBdkNjLENBd0NkLGVBQWdCLENBQ2hCLFVBQVksQ0FDWix1QkN6R29CLENEMEdwQixxQkFBc0IsQ0FDdEIsMkJBQTRCLENBQzVCLHdCQUF5QixDQUN6QixpQkFBa0IsQ0FDbEIsWUFBYSxDQUtiLG9FQUF3RSxDQWxIekUsaUVBK0dBLGFBQWMsQ0FDZCxzQkNsSG1CLENEUW5CLCtHQXlHQSxhQUFjLENBQ2Qsc0JDbEhtQixDRFduQiw0REFzR0EsYUFBYyxDQUNkLHNCQ2xIbUIsQ0RrRGxCLDRDQW9FRCxTQUFVLENBQ1YsaUJBQXFCLENBckVwQiwwQ0F3RUQsVUFBVyxDQUNYLFdBQVksQ0F6RVgsd0RBNEVELFdBQVksQ0E1RVgsaUNBZ0ZDLGlCQUFrQixDQUNsQixPQUFRLENBQ1QsVUFBVyxDQWxGWCxxQ0FvRkQsU0FBVSxDQXBGVCw4Q0EwRkMsaUJBQWtCLENBMUZuQiw4Q0ErRkMsYUFBYyxDQVNsQixpQ0FIQyxpQkFRYyxDQUxmLGFBRUUsVUFBVyxDQUVYLGtCQUFtQixDQUNuQixZQUFhLENBTGYsOEJBT0UsV0FBWSxDQUNaLHVCQ2pLcUIsQ0RrS3JCLGNBQWUsQ0FFZixhQUFjLENBQ2QscUJBQXVCLENBQ3ZCLDJCQUE0QixDQUM1Qiw4QkFBK0IsQ0FDL0IseUJBQTBCLENBQzFCLFlBQWEsQ0FLWix3QkFBeUIsQ0FBekIsK0JBQXlCLENBckI1QiwyQ0F5QkUsYUFBYyxDQUNkLHNCQ3BMbUIsQ0RzTG5CLGtCQUNELDBCQUEyQixDQUMzQiw2QkFBOEIsQ0FFNUIsNEJBQXNCLENBQ3RCLCtCQUF5QixDQUN6Qiw2QkFBdUIsQ0FFekIsaUJBQWtCLENBRWxCLHFCQUFzQixDQUN0QixrQkFBbUIsQ0FDbkIsWUFBYSxDQVpYLHNCQWNBLFdBQVksQ0FDWixVQUFXLENBZlgsdUJBa0JBLGVBQWdCLENBQ2hCLDZCQUE4QixDQUM5QixnQkFBaUIsQ0FHbEIsb0JBQ0QsZUFBaUIsQ0FDakIsaUJBQWtCLENBRWxCLFVBQVcsQ0FDWCxRQUFTLENBTFAsd0JBUUEsU0FBVSIsImZpbGUiOiJpbmRleC5zY3NzIn0= */";
+var css$1 = ".mad-form-cd{display:flex;margin-top:3px}.mad-form-cd span{font-size:13px;display:flex;align-items:center;cursor:pointer}.mad-form-cd span img{padding-right:5px;width:16px;height:16px}.mad-form-cd .addBlock{margin-right:15px;color:#5cba51}.mad-form-cd .removeBlock{color:red}.mad-form-labels{display:flex;justify-content:space-between;align-items:flex-end}.mad-form-optional{font-size:13px;font-family:dinpro-med;color:#ccc;margin-bottom:5px;line-height:1}.mad-form-group{position:relative;display:flex;flex:1;flex-direction:column;line-height:1;margin-bottom:10px}.mad-form-group .mad-form-label{font-size:15px;align-self:flex-start;font-family:dinpro-med;color:#4b4b4d;margin-bottom:5px}.mad-form-group .DayPickerInput{width:100%}.mad-form-group .DayPickerInput-Overlay--top{bottom:40px}.mad-form-group textarea.mad-form-control{width:-webkit-fill-available;line-height:1.3;resize:none}.mad-form-group .DayPickerInput input,.mad-form-group .mad-form-control{display:block;width:-webkit-fill-available;padding:8px 30px 8px 10px;font-size:16px;line-height:1;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .DayPickerInput input::-webkit-input-placeholder,.mad-form-group .mad-form-control::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-moz-placeholder,.mad-form-group .DayPickerInput input::-moz-placeholder,.mad-form-group .mad-form-control:-moz-placeholder,.mad-form-group .mad-form-control::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:-ms-input-placeholder,.mad-form-group .mad-form-control:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .DayPickerInput input:focus,.mad-form-group .mad-form-control:focus{outline:0;border-color:grey}.mad-form-group .DayPickerInput input:disabled,.mad-form-group .mad-form-control:disabled{background-color:#f2f2f2;color:#999}.mad-form-group .mad-form-input-group{width:100%;height:40px;font-size:16px;line-height:1.5;color:#000;font-family:dinpro-bold;background-color:#fff;background-clip:padding-box;border:2px solid #b3b3b3;border-radius:4px;display:flex;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}.mad-form-group .mad-form-input-group::-webkit-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-moz-placeholder,.mad-form-group .mad-form-input-group::-moz-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:-ms-input-placeholder{color:#b3b3b3;font-family:dinpro-med}.mad-form-group .mad-form-input-group:focus{outline:0;border-color:grey}.mad-form-group .mad-form-input-group img{width:18px;height:18px}.mad-form-group .mad-form-input-group .mad-form-control{border:none}.mad-form-group .mad-form-status{position:absolute;display:flex;right:14px}.mad-form-group .mad-form-status img{width:8px}.mad-form-group.disabled .mad-form-status img{visibility:hidden}.mad-form-group.disabled .mad-form-label span{color:#4b4b4d}.input__item,.mad-form .form-row{position:relative}.input__item{width:100%;margin-bottom:18px;display:flex}.input__item .input-control-s{flex-grow:1;width:100%;font-family:dinpro-bold;font-size:16px;display:block;background-color:#fff;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:8px 27px 8px 10px;outline:none;border:2px solid #b3b3b3;border-left:0 solid transparent}.input__item .input-control-s::placeholder{color:#b3b3b3;font-family:dinpro-med}.input__item-icon{border-top-left-radius:5px;border-bottom-left-radius:5px;border-top:2px solid #b3b3b3;border-bottom:2px solid #b3b3b3;border-left:2px solid #b3b3b3;position:relative;padding:4px 0 4px 6px;align-items:center;display:flex}.input__item-icon img{height:18px;width:18px}.input__item-icon span{margin-left:6px;border-left:1px solid #b3b3b3;padding-top:25px}.input__item-status{background:#fff;position:absolute;right:14px;top:11px}.input__item-status img{width:8px}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9pbmRleC5zY3NzIiwic3JjL3N0eWxlcy9fZm9udHMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFnQkUsYUFDRCxZQUFhLENBQ2IsY0FBZSxDQUZiLGtCQUlBLGNBQWUsQ0FDZixZQUFhLENBQ2Isa0JBQW1CLENBQ25CLGNBQWUsQ0FQZixzQkFTRCxpQkFBa0IsQ0FDbEIsVUFBVyxDQUNYLFdBQVksQ0FYWCx1QkFlQSxpQkFBa0IsQ0FDbEIsYUFBYyxDQWhCZCwwQkFtQkEsU0FBYyxDQUdmLGlCQUNELFlBQWEsQ0FDYiw2QkFBOEIsQ0FDOUIsb0JBQXFCLENBRXBCLG1CQUNELGNBQWUsQ0FDZixzQkM3Q29CLENEOENwQixVQUFjLENBQ2QsaUJBQWtCLENBQ2xCLGFBQWMsQ0FFYixnQkFDRCxpQkFBa0IsQ0FDbEIsWUFBYSxDQUNiLE1BQU8sQ0FDUCxxQkFBc0IsQ0FDdEIsYUFBYyxDQUNkLGtCQUFtQixDQU5qQixnQ0FRQSxjQUFlLENBQ2YscUJBQXNCLENBQ3RCLHNCQzVEa0IsQ0Q2RGxCLGFBQWMsQ0FDZCxpQkFBa0IsQ0FabEIsZ0NBaUJELFVBQVcsQ0FqQlYsNkNBb0JBLFdBQ0QsQ0FyQkMsMENBd0JELDRCQUE2QixDQUM3QixlQUFnQixDQUNoQixXQUNELENBM0JFLHdFQTZCQSxhQUFjLENBQ2QsNEJBQTZCLENBQzdCLHlCQUEwQixDQUMxQixjQWxCYyxDQW1CZCxhQUFjLENBQ2QsVUFBWSxDQUNaLHVCQ3BGb0IsQ0RxRnBCLHFCQUFzQixDQUN0QiwyQkFBNEIsQ0FDNUIsd0JBQXlCLENBQ3pCLGlCQUFrQixDQUtsQixvRUFBd0UsQ0E1RnpFLDhIQXlGQSxhQUFjLENBQ2Qsc0JDNUZtQixDRFFuQixzTkFtRkEsYUFBYyxDQUNkLHNCQzVGbUIsQ0RXbkIsb0hBZ0ZBLGFBQWMsQ0FDZCxzQkM1Rm1CLENEa0RsQixvRkE4Q0QsU0FBVSxDQUNWLGlCQUFxQixDQS9DcEIsMEZBa0RELHdCQUFvQyxDQUNwQyxVQUFjLENBbkRiLHNDQXVEQSxVQUFXLENBQ1gsV0FBeUIsQ0FDekIsY0EzQ2MsQ0E0Q2QsZUFBZ0IsQ0FDaEIsVUFBWSxDQUNaLHVCQzdHb0IsQ0Q4R3BCLHFCQUFzQixDQUN0QiwyQkFBNEIsQ0FDNUIsd0JBQXlCLENBQ3pCLGlCQUFrQixDQUNsQixZQUFhLENBS2Isb0VBQXdFLENBdEh6RSxpRUFtSEEsYUFBYyxDQUNkLHNCQ3RIbUIsQ0RRbkIsK0dBNkdBLGFBQWMsQ0FDZCxzQkN0SG1CLENEV25CLDREQTBHQSxhQUFjLENBQ2Qsc0JDdEhtQixDRGtEbEIsNENBd0VELFNBQVUsQ0FDVixpQkFBcUIsQ0F6RXBCLDBDQTRFRCxVQUFXLENBQ1gsV0FBWSxDQTdFWCx3REFnRkQsV0FBWSxDQWhGWCxpQ0FvRkMsaUJBQWtCLENBQ2xCLFlBQWEsQ0FDZCxVQUFXLENBdEZYLHFDQXdGRCxTQUFVLENBeEZULDhDQThGQyxpQkFBa0IsQ0E5Rm5CLDhDQW1HQyxhQUFjLENBU2xCLGlDQUhDLGlCQVFjLENBTGYsYUFFRSxVQUFXLENBRVgsa0JBQW1CLENBQ25CLFlBQWEsQ0FMZiw4QkFPRSxXQUFZLENBQ1osVUFBVyxDQUNYLHVCQ3RLcUIsQ0R1S3JCLGNBQWUsQ0FFZixhQUFjLENBQ2QscUJBQXVCLENBQ3ZCLDJCQUE0QixDQUM1Qiw4QkFBK0IsQ0FDL0IseUJBQTBCLENBQzFCLFlBQWEsQ0FLWix3QkFBeUIsQ0FBekIsK0JBQXlCLENBdEI1QiwyQ0EwQkUsYUFBYyxDQUNkLHNCQ3pMbUIsQ0QyTG5CLGtCQUNELDBCQUEyQixDQUMzQiw2QkFBOEIsQ0FFNUIsNEJBQXNCLENBQ3RCLCtCQUF5QixDQUN6Qiw2QkFBdUIsQ0FFekIsaUJBQWtCLENBRWxCLHFCQUFzQixDQUN0QixrQkFBbUIsQ0FDbkIsWUFBYSxDQVpYLHNCQWNBLFdBQVksQ0FDWixVQUFXLENBZlgsdUJBa0JBLGVBQWdCLENBQ2hCLDZCQUE4QixDQUM5QixnQkFBaUIsQ0FHbEIsb0JBQ0QsZUFBaUIsQ0FDakIsaUJBQWtCLENBRWxCLFVBQVcsQ0FDWCxRQUFTLENBTFAsd0JBUUEsU0FBVSIsImZpbGUiOiJpbmRleC5zY3NzIn0= */";
 styleInject(css$1);
 
 var css$2 = ".mad-select{font-size:16px}.mad-select__menu{font-family:dinpro-med;margin-top:5px!important;text-align:left}.mad-select__menu ::-webkit-scrollbar-track{margin-top:0}.mad-select__control{height:40px}.mad-select__single-value{color:#333;font-family:dinpro-bold}.mad-select__dropdown-indicator{padding:8px 10px 8px 8px!important}.mad-select__indicators{padding-right:10px}.mad-select__indicators div,.mad-select__indicators div div{padding:0!important}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9zZWxlY3QvaW5kZXguc2NzcyIsInNyYy9zdHlsZXMvX2ZvbnRzLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUEsWUFDRSxjQUFlLENBRWpCLGtCQUNFLHNCQ05tQixDRE9uQix3QkFBMEIsQ0FDMUIsZUFBZ0IsQ0FIbEIsNENBS0ksWUFBYSxDQUdqQixxQkFDRSxXQUFZLENBRWQsMEJBQ0UsVUFBYyxDQUNkLHVCQ2pCcUIsQ0RtQnZCLGdDQUNFLGtDQUFvQyxDQUd0Qyx3QkFDRSxrQkFBbUIsQ0FEckIsNERBS00sbUJBQXFCIiwiZmlsZSI6ImluZGV4LnNjc3MifQ== */";
@@ -141,6 +140,7 @@ var MadSelect = function (_a) {
     /** Дефолтный MenuList очень медленно работает с большим массивом данных поэтому используем react-window*/
     var MenuList = function (props) {
         var options = props.options, getValue = props.getValue;
+        console.log(props.children.length);
         var value = getValue()[0];
         var initialOffset = options.indexOf(value) * ITEM_HEIGHT;
         var children = React__default.Children.toArray(props.children);
@@ -157,7 +157,7 @@ var MadSelect = function (_a) {
             return height + getOptionSize(option);
         }, 0);
         var estimatedItemSize = totalHeight / options.length;
-        return (React__default.createElement(reactWindow.VariableSizeList, { height: Math.min(totalHeight != 0 ? totalHeight : ITEM_HEIGHT, 300), itemCount: children.length, itemSize: getItemSize, estimatedItemSize: estimatedItemSize, initialScrollOffset: initialOffset }, function (_a) {
+        return (React__default.createElement(reactWindow.VariableSizeList, { height: Math.min(totalHeight != 0 ? totalHeight : ITEM_HEIGHT, 140), itemCount: children.length, itemSize: getItemSize, estimatedItemSize: estimatedItemSize, initialScrollOffset: initialOffset }, function (_a) {
             var index = _a.index, style = _a.style;
             return React__default.createElement("div", { style: style }, children[index]);
         }));
@@ -166,7 +166,10 @@ var MadSelect = function (_a) {
         label && (React__default.createElement("label", { className: "mad-form-label" },
             label,
             isRequired && !isDisabled && React__default.createElement("span", { style: { color: "red" } }, " *"))),
-        React__default.createElement(Select__default, { isLoading: loading, options: options, name: name, className: "mad-select", classNamePrefix: "mad-select", isDisabled: isDisabled, isClearable: isClearable, onChange: function (e) { return onChange(e, name); }, styles: styles, noOptionsMessage: function () { return (noOptionsMessage ? noOptionsMessage : __.t("noOptions")); }, onFocus: onFocus ? function (e) { return onFocus(e); } : null, onBlur: onBlur ? function (e) { return onBlur(e); } : null, onInputChange: onInputChange ? function (value) { return onInputChange(value); } : null, components: { DropdownIndicator: DropdownIndicator, ClearIndicator: ClearIndicator, LoadingMessage: LoadingMessage, MenuList: MenuList }, defaultValue: value, placeholder: placeholder })));
+        React__default.createElement(Select__default, { isLoading: loading, options: options, name: name, className: "mad-select", classNamePrefix: "mad-select", isDisabled: isDisabled, menuPlacement: "auto", 
+            // menuPosition="fixed"
+            // menuIsOpen={true}
+            isClearable: isClearable, onChange: function (e) { return onChange(e, name); }, styles: styles, noOptionsMessage: function () { return (noOptionsMessage ? noOptionsMessage : __.t("noOptions")); }, onFocus: onFocus ? function (e) { return onFocus(e); } : null, onBlur: onBlur ? function (e) { return onBlur(e); } : null, onInputChange: onInputChange ? function (value) { return onInputChange(value); } : null, components: { DropdownIndicator: DropdownIndicator, ClearIndicator: ClearIndicator, LoadingMessage: LoadingMessage, MenuList: MenuList }, defaultValue: value, placeholder: placeholder })));
 };
 var styles = {
     control: function (provided, state) { return (__assign({}, provided, { "&:hover": {
@@ -178,8 +181,10 @@ var styles = {
     // padding: "8px 10px 8px 8px"
     )); },
     option: function (provided, state) { return (__assign({}, provided, { ":active": {
-            backgroundColor: state.isSelected ? "#F2F2F2" : "#F2F2F2"
-        }, "backgroundColor": state.isSelected ? "#F2F2F2" : state.isFocused ? "#F2F2F2" : "transparent", "color": state.isDisabled ? "black" : state.isSelected ? "black" : "inherit" })); },
+            backgroundColor: state.isSelected ? "#F2F2F2" : "#transparent"
+        }, ":hover": {
+            backgroundColor: "#e6e6e6"
+        }, "backgroundColor": state.isSelected ? "#F2F2F2" : "transparent", "color": state.isDisabled ? "black" : state.isSelected ? "black" : "inherit" })); },
     menuList: function (provided, state) { return (__assign({}, provided, { "::-webkit-scrollbar-track": {
             marginTop: 0
         } })); }
@@ -216,8 +221,8 @@ var commonKK = {
 };
 
 __
-    .use(reactI18next.reactI18nextModule)
-    .use(LanguageDetector)
+    // .use(reactI18nextModule)
+    // .use(LanguageDetector)
     .init({
     fallbackLng: "en",
     interpolation: {
@@ -278,20 +283,20 @@ var validateInput = function (rules, value, tooltip, label, validateAfter) {
                                 description = "Должен быть целым числом";
                                 isValid = false;
                             }
-                            if (value < 0) {
-                                description = "Поле не может иметь отрицательное значение";
-                                isValid = false;
-                            }
+                            // if (value < 0) {
+                            //   description = "Поле не может иметь отрицательное значение"
+                            //   isValid = false
+                            // }
                             break;
                         case "float":
                             if (!validator.isFloat(value) && !validator.isEmpty(value)) {
                                 description = "Не является число с плавающей точкой";
                                 isValid = false;
                             }
-                            if (value < 0) {
-                                description = "Поле не может иметь отрицательное значение";
-                                isValid = false;
-                            }
+                            // if (value < 0) {
+                            //   description = "Поле не может иметь отрицательное значение"
+                            //   isValid = false
+                            // }
                             break;
                         case "url":
                             if (!validator.isEmpty(value) && !validator.isURL(value)) {
@@ -388,6 +393,12 @@ var InputStyleOne = function (props) {
                 ? props.infoDescription
                 : __.t("tooltipDescription", { attribute: props.label }), title: props.label }));
         var value = props.value, rules = props.rules;
+        // для управления событиями в select-е
+        if (props.selectOptions && props.selectOptions.value) {
+            setTooltip(__assign({}, tooltip, { description: props.infoDescription
+                    ? props.infoDescription
+                    : __.t("tooltipDescription", { attribute: props.label }), title: props.label, messageType: "success" }));
+        }
         if (value && rules) {
             validateRules(rules, value);
         }
@@ -407,11 +418,11 @@ var InputStyleOne = function (props) {
         props.handleChange({ value: value, name: name, label: null, isValid: isValid });
     };
     // cb ф-я NurmerFormat, вынес отдельно т.к отличается передаваемые параметры
-    var handleValueChange = function (values, validateAfter) {
+    var handleValueChange = function (values, name, validateAfter) {
         if (validateAfter === void 0) { validateAfter = 0; }
         var value = values.value;
         var isValid = validateRules(props.rules, value, validateAfter);
-        props.handleChange({ value: value, name: "whatever", label: null, isValid: isValid });
+        props.handleChange({ value: value, name: name, label: null, isValid: isValid });
     };
     var handleFocus = function (e) {
         e.preventDefault();
@@ -445,7 +456,7 @@ var InputStyleOne = function (props) {
             if (props.inputType == "select") {
                 // todo: nado kak nit' ne poboyatsya sdelat' prosto merge s MadSelect Componentom (<MadSekect {...props.selectOptions}>)
                 var _a = props.selectOptions, options = _a.options, onChange = _a.onChange, value_1 = _a.value, isClearable = _a.isClearable, onInputChange_1 = _a.onInputChange, loading = _a.loading, noOptionsMessage = _a.noOptionsMessage;
-                var handleChange_1 = props.handleChange;
+                // const { handleChange } = props
                 var selectedValue = null;
                 if (_.find(options, { value: value_1 })) {
                     selectedValue = {
@@ -453,16 +464,20 @@ var InputStyleOne = function (props) {
                         label: _.find(options, { value: value_1 }) ? _.find(options, { value: value_1 }).label : ""
                     };
                 }
+                var handleChange_1 = function (_a) {
+                    var value = _a.value, name = _a.name;
+                    setTooltip(__assign({}, tooltip, { messageType: value && value.value ? "success" : "info" }));
+                    props.handleChange({
+                        value: value ? value.value : "",
+                        name: name,
+                        label: value ? value.label : null,
+                        isValid: !!value
+                    });
+                };
                 return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                     React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                        React__default.createElement(MadSelect, { name: props.name, isClearable: isClearable, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, options: options, noOptionsMessage: noOptionsMessage, onChange: function (value, name) {
-                                return props.handleChange({
-                                    value: value ? value.value : "",
-                                    name: name,
-                                    label: value ? value.label : null,
-                                    isValid: !!value
-                                });
-                            }, placeholder: props.placeholder, value: selectedValue, onInputChange: onInputChange_1 ? function (value) { return onInputChange_1(value); } : null, isDisabled: props.disabled, loading: loading }))));
+                        React__default.createElement(Label, null),
+                        React__default.createElement(MadSelect, { name: props.name, isClearable: isClearable, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, options: options, noOptionsMessage: noOptionsMessage, onChange: function (value, name) { return handleChange_1({ value: value, name: name }); }, placeholder: props.placeholder, value: selectedValue, onInputChange: onInputChange_1 ? function (value) { return onInputChange_1(value); } : null, isDisabled: props.disabled, loading: loading }))));
             }
             return (React__default.createElement("div", { className: "input__item" },
                 React__default.createElement("div", { className: "input__item-icon icons" }, props.iconUrl && (React__default.createElement(React__default.Fragment, null,
@@ -477,7 +492,7 @@ var InputStyleOne = function (props) {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                    React__default.createElement(React__default.Fragment, null,
+                    React__default.createElement("div", { style: { display: "flex", alignItems: "center" } },
                         React__default.createElement("input", { name: props.name, type: props.inputType, autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.label, value: props.value, disabled: props.disabled }),
                         React__default.createElement("div", { className: "mad-form-status" },
                             React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
@@ -486,19 +501,35 @@ var InputStyleOne = function (props) {
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                    React__default.createElement(React__default.Fragment, null,
+                    React__default.createElement("div", { style: { display: "flex", alignItems: "center" } },
                         React__default.createElement(Textarea, { className: "mad-form-control", name: props.name, value: props.value, autoComplete: props.autoComplete, onChange: function (e) { return handleChange(e); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, disabled: props.disabled, minRows: props.minRows ? props.minRows : 3, maxRows: props.maxRows ? props.maxRows : 10 }),
                         React__default.createElement("div", { className: "mad-form-status" },
                             React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
         if (props.inputType == "datePicker") {
+            var overlayPosition = props.datePickerOptions
+                ? props.datePickerOptions.overlayPosition
+                    ? props.datePickerOptions.overlayPosition
+                    : "bottom"
+                : "bottom";
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
                     React__default.createElement("div", { onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); } },
-                        React__default.createElement(DayPickerInput, { onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Выберите дату", inputProps: { readOnly: true, name: props.name }, onDayChange: function (day) {
-                                return props.handleChange({ value: moment(day).unix(), name: props.name, isValid: true, label: null });
-                            }, value: props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : "", format: "DD MMMM YYYY", dayPickerProps: __assign({ locale: "ru", localeUtils: MomentLocaleUtils, name: name }, props.datePickerOptions) }),
+                        React__default.createElement(DayPickerInput, { classNames: {
+                                container: "DayPickerInput",
+                                overlayWrapper: "DayPickerInput-OverlayWrapper",
+                                overlay: "DayPickerInput-Overlay" + (overlayPosition == "top" ? " DayPickerInput-Overlay--top" : "") // The overlay's container
+                            }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Выберите дату", inputProps: { readOnly: true, name: props.name }, onDayChange: function (day) {
+                                return props.handleChange({
+                                    value: moment(day).unix() - 12 * 3600,
+                                    name: props.name,
+                                    isValid: true,
+                                    label: null
+                                });
+                            }, value: props.value ? moment(props.value * 1000).format("DD MMMM YYYY") : "", format: "DD MMMM YYYY", 
+                            // showOverlay={true}
+                            dayPickerProps: __assign({ locale: "ru", localeUtils: MomentLocaleUtils, name: name }, props.datePickerOptions) }),
                         React__default.createElement("div", { className: "mad-form-status" },
                             React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
@@ -511,25 +542,33 @@ var InputStyleOne = function (props) {
                     label: _.find(options, { value: value_2 }) ? _.find(options, { value: value_2 }).label : ""
                 };
             }
+            var handleChange_2 = function (_a) {
+                var value = _a.value, name = _a.name;
+                setTooltip(__assign({}, tooltip, { messageType: value && value.value ? "success" : "info" }));
+                props.handleChange({
+                    value: value ? value.value : "",
+                    name: name,
+                    label: value ? value.label : null,
+                    isValid: !!value
+                });
+            };
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                    React__default.createElement(MadSelect, { name: props.name, isClearable: isClearable, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, options: options, placeholder: props.placeholder, noOptionsMessage: noOptionsMessage, onChange: function (value, name) {
-                            return props.handleChange({
-                                value: value ? value.value : "",
-                                name: name,
-                                label: value ? value.label : null,
-                                isValid: !!value
-                            });
-                        }, value: selectedValue, onInputChange: onInputChange_2 ? function (value) { return onInputChange_2(value); } : null, isDisabled: props.disabled, loading: loading }))));
+                    React__default.createElement(MadSelect, { name: props.name, isClearable: isClearable, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, options: options, placeholder: props.placeholder, noOptionsMessage: noOptionsMessage, onChange: function (value, name) { return handleChange_2({ value: value, name: name }); }, value: selectedValue, onInputChange: onInputChange_2 ? function (value) { return onInputChange_2(value); } : null, isDisabled: props.disabled, loading: loading }))));
         }
         if (props.inputType == "numberFormat") {
-            var _c = props.numberFormatOptions, suffix = _c.suffix, thousandSeparator = _c.thousandSeparator, format = _c.format, mask = _c.mask, type = _c.type;
+            var _c = props.numberFormatOptions, suffix = _c.suffix, thousandSeparator = _c.thousandSeparator, format = _c.format, mask = _c.mask, type = _c.type, allowNegative = _c.allowNegative, allowZeroStart_1 = _c.allowZeroStart;
             return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
                 React__default.createElement(Label, null),
                 React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                    React__default.createElement(React__default.Fragment, null,
-                        React__default.createElement(NumberFormat, { name: props.name, className: "mad-form-control", onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, value: props.value, disabled: props.disabled, suffix: suffix, mask: mask, format: format, type: type, thousandSeparator: thousandSeparator, onValueChange: function (values) { return handleValueChange(values, props.validateAfter); }, decimalScale: 2 }),
+                    React__default.createElement("div", { style: { display: "flex", alignItems: "center" } },
+                        React__default.createElement(NumberFormat, { name: props.name, className: "mad-form-control", onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : "Заполните " + props.label, value: props.value, disabled: props.disabled, suffix: suffix, mask: mask, allowNegative: allowNegative ? allowNegative : false, isAllowed: function (values) {
+                                if (allowZeroStart_1) {
+                                    return true;
+                                }
+                                return !values.value.startsWith("0");
+                            }, format: format, type: type, thousandSeparator: thousandSeparator, onValueChange: function (values) { return handleValueChange(values, props.name, props.validateAfter); }, decimalScale: 2 }),
                         React__default.createElement("div", { className: "mad-form-status" },
                             React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));
         }
@@ -537,7 +576,7 @@ var InputStyleOne = function (props) {
         return (React__default.createElement("div", { className: "mad-form-group" + (props.disabled ? " disabled" : "") },
             React__default.createElement(Label, null),
             React__default.createElement(MadTooltip, { data: tooltip, enabled: props.enableTooltip },
-                React__default.createElement(React__default.Fragment, null,
+                React__default.createElement("div", { style: { display: "flex", alignItems: "center" } },
                     React__default.createElement("input", { name: props.name, autoComplete: props.autoComplete, className: "mad-form-control", onChange: function (e) { return handleChange(e, props.validateAfter); }, onFocus: function (e) { return handleFocus(e); }, onBlur: function (e) { return handleBlur(e); }, placeholder: props.placeholder ? props.placeholder : props.label, value: props.value, disabled: props.disabled }),
                     React__default.createElement("div", { className: "mad-form-status" },
                         React__default.createElement(ImgIcon, { messageType: tooltip.messageType }))))));

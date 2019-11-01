@@ -82,6 +82,7 @@ const MadSelect = ({
   /** Дефолтный MenuList очень медленно работает с большим массивом данных поэтому используем react-window*/
   const MenuList = props => {
     const { options, getValue } = props
+    console.log(props.children.length)
     const [value] = getValue()
 
     const initialOffset = options.indexOf(value) * ITEM_HEIGHT
@@ -98,14 +99,13 @@ const MadSelect = ({
     function getItemSize(i) {
       return getOptionSize(options[i])
     }
-
     const totalHeight = options.reduce((height, option) => {
       return height + getOptionSize(option)
     }, 0)
     const estimatedItemSize = totalHeight / options.length
     return (
       <List
-        height={Math.min(totalHeight != 0 ? totalHeight : ITEM_HEIGHT, 300)}
+        height={Math.min(totalHeight != 0 ? totalHeight : ITEM_HEIGHT, 140)}
         itemCount={children.length}
         itemSize={getItemSize}
         estimatedItemSize={estimatedItemSize}
@@ -118,7 +118,7 @@ const MadSelect = ({
   return (
     <>
       {label && (
-        <label className="mad-form-label">
+        <label className="mad-form__label">
           {label}
           {isRequired && !isDisabled && <span style={{ color: "red" }}> *</span>}
         </label>
@@ -130,6 +130,9 @@ const MadSelect = ({
         className="mad-select"
         classNamePrefix="mad-select"
         isDisabled={isDisabled}
+        menuPlacement="auto"
+        // menuPosition="fixed"
+        // menuIsOpen={true}
         isClearable={isClearable}
         onChange={e => onChange(e, name)}
         styles={styles}
@@ -171,9 +174,12 @@ const styles = {
   option: (provided, state) => ({
     ...provided,
     ":active": {
-      backgroundColor: state.isSelected ? "#F2F2F2" : "#F2F2F2"
+      backgroundColor: state.isSelected ? "#F2F2F2" : "#transparent"
     },
-    "backgroundColor": state.isSelected ? "#F2F2F2" : state.isFocused ? "#F2F2F2" : "transparent",
+    ":hover": {
+      backgroundColor: "#e6e6e6"
+    },
+    "backgroundColor": state.isSelected ? "#F2F2F2" : "transparent", //state.isFocused ? "#F2F2F2" : "transparent",
     "color": state.isDisabled ? "black" : state.isSelected ? "black" : "inherit"
   }),
   menuList: (provided, state) => ({
