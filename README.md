@@ -27,14 +27,14 @@ $ npm install input-style-one
   + `enableTooltip?` - `true` by default. Enable or dirable left side Popover
   + `showLabel?` - `true` by default. Show or hide `label` text above input.
   + `showOptionalLabel?` - `true` by default. Show or hide "optional" text in `label` no matter `required` rule is accepted.
-  + `inputType?` - `text` by default. Available options: `select`, `password`, `textArea`, `datePicker` and `numberFormat`
+  + `inputType?` - `text` by default. Available options: `select`, `multi-select`, `password`, `textArea`, `datePicker` and `numberFormat`
   + `disabled?` - `false` by default. Set this prop `true` whenever input should be sidabled
   + `autocomplete?` - `true` by default. Set this prop `true` whenever html `autocomplete` property should be enabled/disabled
   + `placeholder?` - equals to `label` by default.
   + `minRows?` - minRow prop of text area autosize package. Will be moved to `textAreaOptions` in the future
   + `maxRows?` - maxRow prop of text area autosize package. Will be moved to `textAreaOptions` in the future
   + `infoDescription?` - pass "Custom information" message to tooltip if needed
-  + `iconUrl?` - used only when `layout="one"` and `inputType="text"`
+  + `iconUrl?` - use this whenever need to add icon from leftside of input
   + `rules` - Array of rules where input value should be validated. Available rules:
     + `required`
     + `email`

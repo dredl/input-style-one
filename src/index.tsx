@@ -19,12 +19,17 @@ interface handleParams {
   label?: string
   isValid: boolean
 }
+interface handleMultiSelectParams {
+  name: string
+  isValid: boolean
+  selectValues: []
+}
 interface IInputStyleOne {
   //required
   name: string
   label: string
   value: any
-  handleChange(args: handleParams): void
+  handleChange(args: handleParams | any): void
 
   //optional
   /**
@@ -163,11 +168,12 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
         return (
           <MadTooltip data={tooltip} enabled={enableTooltip}>
             <div className="mad-form__input" tabIndex={-1}>
+              <Icon />
               <input
                 name={name}
                 type={inputType}
                 autoComplete={autoComplete}
-                className="mad-form-control"
+                className="mad-form__control"
                 onChange={e => handleChange(e, validateAfter)}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -252,7 +258,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
         )
       }
       case "select": {
-        const { options, value, isClearable, onInputChange, loading, noOptionsMessage } = selectOptions
+        const { options, value, isClearable, onInputChange, loading, noOptionsMessage, isMulti = false } = selectOptions
 
         const handleChange = ({ value, name }) => {
           setTooltip({ ...tooltip, ...{ messageType: value && value.value ? "success" : "info" } })
@@ -284,6 +290,40 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
           </MadTooltip>
         )
       }
+      case "multi-select": {
+        const { options, value, isClearable, onInputChange, loading, noOptionsMessage } = selectOptions
+
+        const handleChange = (e, name) => {
+          setTooltip({ ...tooltip, ...{ messageType: e ? "success" : "info" } })
+          props.handleChange({
+            selectValues: e,
+            name,
+            isValid: !!value
+          })
+        }
+        return (
+          <MadTooltip data={tooltip} enabled={enableTooltip}>
+            <div tabIndex={-1}>
+              <MadSelect
+                name={name}
+                isClearable={isClearable}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                options={options}
+                placeholder={placeholder}
+                noOptionsMessage={noOptionsMessage}
+                onChange={null}
+                onMultiChange={(e, name) => handleChange(e, name)}
+                value={options.find(option => option.value == value)}
+                isMulti
+                onInputChange={onInputChange ? value => onInputChange(value) : null}
+                isDisabled={disabled}
+                loading={loading}
+              />
+            </div>
+          </MadTooltip>
+        )
+      }
       case "numberFormat": {
         const {
           suffix,
@@ -297,6 +337,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
         return (
           <MadTooltip data={tooltip} enabled={enableTooltip}>
             <div className="mad-form__input" tabIndex={-1}>
+              <Icon />
               <NumberFormat
                 name={name}
                 className="mad-form__control"

@@ -11,7 +11,10 @@ interface IInputStyleOne {
     name: string;
     label: string;
     value: any;
-    handleChange(args: handleParams): void;
+    handleChange(args: handleParams | any): void;
+    /**
+     * @deprecated just remove this props and everything will be ok :)
+     */
     layout?: string;
     enableTooltip?: boolean;
     inputType?: string;
@@ -20,6 +23,8 @@ interface IInputStyleOne {
     placeholder?: string;
     minRows?: number;
     maxRows?: number;
+    showLabel?: boolean;
+    showOptionalLabel?: boolean;
     infoDescription?: string;
     iconUrl?: string;
     rules?: any;

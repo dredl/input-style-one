@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import "./App.css"
 import InputStyleOne from "../../src"
 // import logo from './logo.svg';
-import "react-day-picker/lib/style.css"
+
 import moment from "moment"
 const App: React.FC = () => {
   const options = []
@@ -36,9 +36,13 @@ const App: React.FC = () => {
       description: "All is Fine"
     }
   }
-
+  const [regionId, setRegionId] = useState(1)
   const submitSomething = () => {}
   console.log(phone.value)
+  const [searchValue, setSearchValue] = useState("")
+  const onInputChange = value => {
+    setSearchValue(value)
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -49,13 +53,14 @@ const App: React.FC = () => {
           <InputStyleOne
             name="receipt"
             iconUrl="../../assets/cross-imput.svg"
-            infoDescription="Custom Info Description"
+            infoDescription="Custom Info Description Custom Info Description Custom Info Description Custom Info Description Custom Info Description"
             // disabled={true}
+            inputType="password"
             // enableTooltip={false}
             label="website"
             value={website.value}
             handleChange={({ value, isValid }) => setWebsite({ value, isValid })}
-            rules={["required", "url", ["custom", validateWebsite]]}
+            // rules={["required", "url", ["custom", validateWebsite]]}
           />
           <button onClick={submitSomething}>Submit</button>
           {grainReceipts.map((gr, key) => {
@@ -77,6 +82,27 @@ const App: React.FC = () => {
             // enableTooltip={false}
             showLabel={false}
             label="Дата погрузки товара"
+            inputType="multi-select"
+            value={value}
+            infoDescription={"QUQU epta"}
+            handleChange={({ name, selectValues, isValid }) => console.log({ name, selectValues, isValid })}
+            rules={["required"]}
+            selectOptions={{
+              options: options,
+              onInputChange: value => onInputChange(value),
+              noOptionsMessage: (
+                <span>
+                  {searchValue} not found. <span onClick={e => console.log("clicked")}>add it?</span>
+                </span>
+              )
+            }}
+          />
+          <InputStyleOne
+            name="startDate"
+            placeholder="Выберите страну"
+            // enableTooltip={false}
+            showLabel={false}
+            label="Дата погрузки товара"
             inputType="select"
             value={value}
             disabled={true}
@@ -85,7 +111,7 @@ const App: React.FC = () => {
             rules={["required"]}
             selectOptions={{
               options: options,
-              value: options[5].value,
+              value: regionId,
               noOptionsMessage: "Strana ne naidena"
             }}
           />
@@ -98,7 +124,8 @@ const App: React.FC = () => {
           />
           <InputStyleOne
             inputType="numberFormat"
-            disabled={true}
+            iconUrl="../../assets/cross-imput.svg"
+            // disabled={true}
             name="startPrice"
             label="Стартовая цена"
             value={startPrice.value}
@@ -166,7 +193,7 @@ const App: React.FC = () => {
             value={value}
             handleChange={({ value, name, isValid, label }) => console.log({ value, name, isValid, label })}
             rules={["required"]}
-            disabled={true}
+            iconUrl="../../assets/cross-imput.svg"
             datePickerOptions={{
               disabledDays: [{ before: moment(moment().add(3, "days")).toDate() }, { daysOfWeek: [0, 6] }],
               // disabledDays: { before: moment(moment().add(3, "days")).toDate() }, //(day => day <= moment().add(3, "days"))

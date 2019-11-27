@@ -68,13 +68,15 @@ const MadSelect = ({
   value = null,
   isDisabled = false,
   onChange,
+  onMultiChange = null,
   onFocus = null,
   onBlur = null,
   isClearable = true,
   placeholder = "Выберите",
   onInputChange = null,
   loading = null,
-  noOptionsMessage = null
+  noOptionsMessage = null,
+  isMulti = false
 }) => {
   const GROUP_HEADER_HEIGHT = 10
   const ITEM_HEIGHT = 34
@@ -127,21 +129,23 @@ const MadSelect = ({
         isLoading={loading}
         options={options}
         name={name}
-        className="mad-select"
+        className={"mad-select" + (isMulti ? " mad-select--isMulti" : undefined)}
         classNamePrefix="mad-select"
         isDisabled={isDisabled}
         menuPlacement="auto"
         // menuPosition="fixed"
         // menuIsOpen={true}
+        isMulti={isMulti}
         isClearable={isClearable}
-        onChange={e => onChange(e, name)}
+        onChange={e => (!isMulti ? onChange(e, name) : onMultiChange(e, name))}
         styles={styles}
         noOptionsMessage={() => (noOptionsMessage ? noOptionsMessage : __.t("noOptions"))}
         onFocus={onFocus ? e => onFocus(e) : null}
         onBlur={onBlur ? e => onBlur(e) : null}
         onInputChange={onInputChange ? value => onInputChange(value) : null}
         components={{ DropdownIndicator, ClearIndicator, LoadingMessage, MenuList }}
-        defaultValue={value}
+        defaultValue={value} //4to budet pokazano pri inicializacii
+        value={!isMulti ? value : undefined} //4to mojet byt' pri izmenenii. esly isMulti = true, value dolzhen byt' undefine inace multiselect ne budet rabotat'
         placeholder={placeholder}
       />
     </>
@@ -182,11 +186,10 @@ const styles = {
     "backgroundColor": state.isSelected ? "#F2F2F2" : "transparent", //state.isFocused ? "#F2F2F2" : "transparent",
     "color": state.isDisabled ? "black" : state.isSelected ? "black" : "inherit"
   }),
-  menuList: (provided, state) => ({
-    ...provided,
-    "::-webkit-scrollbar-track": {
-      marginTop: 0
-    }
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: data.color,
+    fontFamily: "dinpro-med"
   })
 }
 export default MadSelect

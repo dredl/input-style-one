@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import "./index.scss";
-declare const MadSelect: ({ isRequired, label, name, options, value, isDisabled, onChange, onFocus, onBlur, isClearable, placeholder, onInputChange, loading, noOptionsMessage }: {
+declare const MadSelect: ({ isRequired, label, name, options, value, isDisabled, onChange, onMultiChange, onFocus, onBlur, isClearable, placeholder, onInputChange, loading, noOptionsMessage, isMulti }: {
     isRequired?: boolean;
     label?: any;
     name: any;
@@ -8,6 +8,7 @@ declare const MadSelect: ({ isRequired, label, name, options, value, isDisabled,
     value?: any;
     isDisabled?: boolean;
     onChange: any;
+    onMultiChange?: any;
     onFocus?: any;
     onBlur?: any;
     isClearable?: boolean;
@@ -15,5 +16,6 @@ declare const MadSelect: ({ isRequired, label, name, options, value, isDisabled,
     onInputChange?: any;
     loading?: any;
     noOptionsMessage?: any;
+    isMulti?: boolean;
 }) => JSX.Element;
 export default MadSelect;

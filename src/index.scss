@@ -30,6 +30,7 @@ $input-padding: 8px;
 		}
 	}
 	&__input {
+		box-sizing: content-box;
 		display: flex;
 		align-items: center;
 		border: 2px solid #B3B3B3;
@@ -43,6 +44,8 @@ $input-padding: 8px;
 				resize: none;
 				height: -webkit-fill-available;
 				line-height: 1.3;
+				overflow: hidden;
+				margin-top: 1px; //esy ee ne postavit' to 1px bordera szhiraetsya hz pochemu
 			}
 			
 		}
@@ -52,6 +55,7 @@ $input-padding: 8px;
 		}
 		&.DayPickerInput {
 			width: -webkit-fill-available;
+			display: inline-block;
 			// raspologaet kalendar nad inputom
 			
 			input {//poka prixoditsya dublirovat' s mad-form__control
@@ -86,11 +90,13 @@ $input-padding: 8px;
 	&__label {
 		display: flex;
 		justify-content: space-between;  
+		align-items: center;
 	  color: #4B4B4D;
 		margin-bottom: 5px;
 
 		label {
 			font-size: 15px;
+			margin-bottom: 0; //perepisivaet stil bootstrap
 			font-family: $font_med;
 		}
 		span {
@@ -123,7 +129,7 @@ $input-padding: 8px;
 		}
 	}
 	&__control {
-		width: -webkit-fill-available;
+		width: 100%;
 		padding: 7px 0;
 		font-size: 16px;
 		color: black;

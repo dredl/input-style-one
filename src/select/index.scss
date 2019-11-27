@@ -2,13 +2,29 @@
 //Select
 .mad-select {
   font-size: 16px;
+  &--isMulti {
+    .mad-select__control {
+      min-height: 40px;
+      height: 100%;
+    }
+  }
 }
 .mad-select__menu {
   font-family: $font_med;
   margin-top: 5px !important;
   text-align: left;
+  
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
   ::-webkit-scrollbar-track {
     margin-top: 0;
+    background-color: #fcfcfc;
+    border: 1px solid #e6e6e6;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cccccc;
   }
 }
 .mad-select__control {
