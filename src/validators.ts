@@ -37,33 +37,25 @@ export const validateInput = (
                 isValid = false
               }
               break
-            case "card":
+            case "card": //Пока не используется для пользователей
               if (!validator.isCreditCard(value) && !validator.isEmpty(value)) {
                 description = "Credit card is not valid" //TODO: perevesty //__.t("tooltipDescriptionIncorrect", { attribute: tooltip.title }),
                 isValid = false
               }
               break
-            case "integer":
+            case "integer": //Этой проверки можно избежать если использовать NumberFormat
               if (!validator.isInt(value) && !validator.isEmpty(value)) {
                 description = "Должен быть целым числом"
                 isValid = false
               }
-              // if (value < 0) {
-              //   description = "Поле не может иметь отрицательное значение"
-              //   isValid = false
-              // }
               break
-            case "float":
+            case "float": //Этой проверки можно избежать если использовать NumberFormat
               if (!validator.isFloat(value) && !validator.isEmpty(value)) {
                 description = "Не является число с плавающей точкой"
                 isValid = false
               }
-              // if (value < 0) {
-              //   description = "Поле не может иметь отрицательное значение"
-              //   isValid = false
-              // }
               break
-            case "url":
+            case "url": //Пока не используется для пользователей
               if (!validator.isEmpty(value) && !validator.isURL(value)) {
                 description = "Поле не является правильным сайтом"
                 isValid = false
@@ -84,7 +76,7 @@ export const validateInput = (
               break
             case "maxString":
               if (!validator.isLength(value, { max: rule[1] })) {
-                description = "Превышено максимальное количество символов - " + rule[1]
+                description = __.t("maxString", { max: rule[1] })
                 isValid = false
               }
               break
@@ -94,8 +86,8 @@ export const validateInput = (
                 isValid = false
               }
               break
-
-            case "minAmountValue":
+            // @deprecated
+            case "minAmountValue": // лучше использовать либо custom либо lte
               if (value < rule[1]) {
                 description = `Объем товара должен быть не менее ${rule[1]} тонн`
                 isValid = false
@@ -103,13 +95,13 @@ export const validateInput = (
               break
             case "lte":
               if (parseFloat(value) > parseFloat(rule[1])) {
-                description = "значение должно быть меньше или равно " + rule[1]
+                description = __.t("lte", { compareValue: rule[1] })
                 isValid = false
               }
               break
             case "gte":
               if (parseFloat(value) < parseFloat(rule[1])) {
-                description = "значение должно быть больше или равно " + rule[1]
+                description = __.t("gte", { compareValue: rule[1] })
                 isValid = false
               }
               break

@@ -13,6 +13,7 @@ import NumberFormat from "react-number-format"
 import { I18nextProvider } from "react-i18next"
 import translations from "./i18n"
 import { validateInput } from "./validators"
+import CrossInput from "../assets/cross-imput.svg"
 interface handleParams {
   value: any
   name: string
@@ -71,7 +72,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
     value,
     infoDescription = null,
     disabled,
-    placeholder,
+    placeholder = label,
     enableTooltip = true,
     validateAfter,
     selectOptions = null,
@@ -177,7 +178,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onChange={e => handleChange(e, validateAfter)}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                placeholder={label}
+                placeholder={placeholder}
                 value={value}
                 disabled={disabled}
               />
@@ -198,7 +199,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onChange={e => handleChange(e)}
                 onFocus={e => handleFocus(e)}
                 onBlur={e => handleBlur(e)}
-                placeholder={placeholder ? placeholder : "Заполните " + label}
+                placeholder={placeholder}
                 disabled={disabled}
                 minRows={props.minRows ? props.minRows : 3} //todo
                 maxRows={props.maxRows ? props.maxRows : 10}
@@ -216,9 +217,9 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
             : "bottom"
           : "bottom"
         const handleChange = day => {
-          setTooltip({ ...tooltip, ...{ messageType: day ? "success" : "info" } })
+          setTooltip({ ...tooltip, ...{ messageType: day != "" ? "success" : "info" } })
           props.handleChange({
-            value: moment(day).unix() - 12 * 3600, //когда происходит конвертация с дня на unix time, почему то добавляется 12 часов
+            value: day != "" ? moment(day).unix() - 12 * 3600 : "", //когда происходит конвертация с дня на unix time, почему то добавляется 12 часов
             name: name,
             isValid: true,
             label: null
@@ -230,19 +231,20 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
               onFocus={handleFocus}
               onBlur={handleBlur}
               tabIndex={-1}
-              style={{ outline: "none", borderColor: "transparent" }}
+              // style={{ outline: "none", borderColor: "transparent" }}
+              className="mad-form__input"
             >
               <DayPickerInput
                 classNames={{
-                  container: "DayPickerInput mad-form__input",
+                  container: "DayPickerInput",
                   overlayWrapper: "DayPickerInput-OverlayWrapper",
                   overlay: "DayPickerInput-Overlay" + (overlayPosition == "top" ? " DayPickerInput-Overlay--top" : "") // The overlay's container
                 }}
                 onBlur={e => handleBlur(e)}
-                placeholder={placeholder ? placeholder : "Выберите дату"}
+                placeholder={__.t("selectDate")}
                 inputProps={{ readOnly: true, name: name, disabled }}
                 onDayChange={day => handleChange(day)}
-                value={value ? moment(value * 1000).format("DD MMMM YYYY") : ""}
+                value={value != "" ? moment(value * 1000).format("DD MMMM YYYY") : value}
                 format="DD MMMM YYYY"
                 // showOverlay={true}
                 dayPickerProps={{
@@ -252,7 +254,15 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                   ...datePickerOptions
                 }}
               />
-              <Status messageType={tooltip.messageType} />
+              {value != "" && (
+                <img
+                  src={CrossInput}
+                  alt=""
+                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  onClick={e => handleChange("")}
+                />
+              )}
+              {/* <Status messageType={tooltip.messageType} /> */}
             </div>
           </MadTooltip>
         )
@@ -278,8 +288,8 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 options={options}
-                placeholder={placeholder}
-                noOptionsMessage={noOptionsMessage}
+                placeholder={__.t("select")}
+                noOptionsMessage={noOptionsMessage} // она динамична поэтому передается через пропс
                 onChange={(value, name) => handleChange({ value, name })}
                 value={options.find(option => option.value == value)}
                 onInputChange={onInputChange ? value => onInputChange(value) : null}
@@ -310,11 +320,11 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 options={options}
-                placeholder={placeholder}
-                noOptionsMessage={noOptionsMessage}
+                placeholder={__.t("select")}
+                noOptionsMessage={noOptionsMessage} // она динамична поэтому передается через пропс
                 onChange={null}
                 onMultiChange={(e, name) => handleChange(e, name)}
-                value={options.find(option => option.value == value)}
+                value={value}
                 isMulti
                 onInputChange={onInputChange ? value => onInputChange(value) : null}
                 isDisabled={disabled}
@@ -332,7 +342,8 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
           mask,
           type,
           allowNegative = false,
-          allowZeroStart = false
+          allowZeroStart = false,
+          decimalScale = 0
         } = numberFormatOptions
         return (
           <MadTooltip data={tooltip} enabled={enableTooltip}>
@@ -355,7 +366,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 type={type}
                 thousandSeparator={thousandSeparator}
                 onValueChange={values => handleValueChange(values, name, validateAfter)}
-                decimalScale={2}
+                decimalScale={decimalScale}
               />
               <Status messageType={tooltip.messageType} />
             </div>
@@ -380,7 +391,7 @@ const InputStyleOne: React.FC<IInputStyleOne> = props => {
                 onChange={e => handleChange(e, validateAfter)}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                placeholder={placeholder ? placeholder : label}
+                placeholder={placeholder}
                 value={value}
                 disabled={disabled}
               />

@@ -7,7 +7,10 @@ import moment from "moment"
 const App: React.FC = () => {
   const options = []
   for (let i = 1; i < 1000; i = i + 1) {
-    options.push({ value: i, label: `Option ${i}` })
+    options.push({
+      value: `select_${i}`,
+      label: `Option ${i}`
+    })
   }
   const [value, setValue] = useState("")
   const [card, setCard] = useState("")
@@ -43,6 +46,7 @@ const App: React.FC = () => {
   const onInputChange = value => {
     setSearchValue(value)
   }
+  const [unix, setUnix] = useState("")
   return (
     <div className="App">
       <header className="App-header">
@@ -76,14 +80,14 @@ const App: React.FC = () => {
               />
             )
           })}
-          <InputStyleOne
+          {/* <InputStyleOne
             name="startDate"
             placeholder="Выберите страну"
             // enableTooltip={false}
             showLabel={false}
-            label="Дата погрузки товара"
+            label="Выберите страну"
             inputType="multi-select"
-            value={value}
+            value={[options[0], options[1]]}
             infoDescription={"QUQU epta"}
             handleChange={({ name, selectValues, isValid }) => console.log({ name, selectValues, isValid })}
             rules={["required"]}
@@ -94,9 +98,10 @@ const App: React.FC = () => {
                 <span>
                   {searchValue} not found. <span onClick={e => console.log("clicked")}>add it?</span>
                 </span>
-              )
+              ),
+              value: [options[0], options[1]]
             }}
-          />
+          /> */}
           <InputStyleOne
             name="startDate"
             placeholder="Выберите страну"
@@ -104,8 +109,8 @@ const App: React.FC = () => {
             showLabel={false}
             label="Дата погрузки товара"
             inputType="select"
-            value={value}
-            disabled={true}
+            value={options[0]}
+            // disabled={true}
             infoDescription={"QUQU epta"}
             handleChange={({ value, name, label, isValid }) => console.log({ value, name, label }, isValid)}
             rules={["required"]}
@@ -190,8 +195,23 @@ const App: React.FC = () => {
             name="startDate"
             label="Дата начала торгов"
             inputType="datePicker"
-            value={value}
-            handleChange={({ value, name, isValid, label }) => console.log({ value, name, isValid, label })}
+            value={unix}
+            handleChange={({ value, isValid }) => setUnix(value)}
+            rules={["required"]}
+            datePickerOptions={{
+              disabledDays: { before: moment(moment().add(3, "days")).toDate() },
+              initialMonth: moment(moment().add(3, "days")).toDate()
+            }}
+          />
+          {/* <InputStyleOne
+            name="startDate"
+            label="Дата начала торгов"
+            inputType="datePicker"
+            value={unix}
+            handleChange={({ value, name, isValid, label }) => {
+              console.log("value", value)
+              setUnix(value)
+            }}
             rules={["required"]}
             iconUrl="../../assets/cross-imput.svg"
             datePickerOptions={{
@@ -200,7 +220,7 @@ const App: React.FC = () => {
               initialMonth: moment(moment().add(3, "days")).toDate(),
               overlayPosition: "top"
             }}
-          />
+          /> */}
           <InputStyleOne
             name="startDate"
             // layout="one"
@@ -208,8 +228,8 @@ const App: React.FC = () => {
             // enableTooltip={false}
             label="Дата погрузки товара"
             inputType="select"
-            value={value}
-            handleChange={({ value, name, label, isValid }) => console.log({ value, name, label }, isValid)}
+            value={options.find(item => item.value == value)}
+            handleChange={({ value, name, label, isValid }) => setValue(value)}
             rules={["required"]}
             selectOptions={{
               options: options,

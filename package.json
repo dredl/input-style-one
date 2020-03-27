@@ -1,6 +1,6 @@
 {
   "name": "input-style-one",
-  "version": "1.4.0",
+  "version": "1.4.10",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -78,9 +78,6 @@
     "@types/react-dom": "^16.8.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "@types/react-i18next": "^8.1.0",
-    "@types/react-textarea-autosize": "^4.3.4",
-    "@types/validator": "^10.11.1",
     "i18next": "^17.0.16",
     "i18next-browser-languagedetector": "^3.0.3",
     "lodash": "^4.17.11",
@@ -90,9 +87,6 @@
     "react-number-format": "^4.0.8",
     "react-select": "^3.0.4",
     "react-textarea-autosize": "^7.1.0",
-    "react-window": "^1.8.5",
-    "recompose": "^0.30.0",
-    "ts-loader": "^6.0.4",
-    "validator": "^11.0.0"
+    "react-window": "^1.8.5"
   }
 }

@@ -53,33 +53,16 @@ $input-padding: 8px;
 			bottom: 40px;
 			left: -$input-padding;
 		}
-		&.DayPickerInput {
-			width: -webkit-fill-available;
-			display: inline-block;
-			// raspologaet kalendar nad inputom
-			
-			input {//poka prixoditsya dublirovat' s mad-form__control
-				width: -webkit-fill-available;
-				padding: 7px 0;
-				font-size: 16px;
-				color: black;
-				font-family: $font_bold;
-				background-color: #fff;
+		.DayPickerInput {
+			width: 100%;
+			&.mad-form__input {
+				width: 100%;	
+			}
+			input {
+				width: 100%;	
+				height: 26px;
 				border: none;
-				margin-top: 1px; //kostilek no rabo4y
-				@include placeholder {
-					color: #B3B3B3;
-					font-family: $font_med;
-				}
-				transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-				&:focus {
-					outline: 0;
-					border-color: #808080;
-				}
-				&:disabled {
-					background-color: rgb(242, 242, 242);
-					color: #999999;
-				}
+				outline: none;
 			}
 		}
 		&:focus-within {
@@ -118,6 +101,7 @@ $input-padding: 8px;
 		width: 7px;
 		height: 7px;
 		border-radius: 100px;
+		margin-left: 8px;
 		&-error {
 			background: red;
 		}
@@ -130,6 +114,7 @@ $input-padding: 8px;
 	}
 	&__control {
 		width: 100%;
+		text-overflow: ellipsis;
 		padding: 7px 0;
 		font-size: 16px;
 		color: black;

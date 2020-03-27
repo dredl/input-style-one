@@ -79,12 +79,11 @@ const MadSelect = ({
   isMulti = false
 }) => {
   const GROUP_HEADER_HEIGHT = 10
-  const ITEM_HEIGHT = 34
+  const ITEM_HEIGHT = 35
 
   /** Дефолтный MenuList очень медленно работает с большим массивом данных поэтому используем react-window*/
   const MenuList = props => {
     const { options, getValue } = props
-    console.log(props.children.length)
     const [value] = getValue()
 
     const initialOffset = options.indexOf(value) * ITEM_HEIGHT

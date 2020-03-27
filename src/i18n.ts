@@ -4,11 +4,16 @@ import i18n from "i18next"
 import commonRU from "./i18n/ru/common"
 import commonEn from "./i18n/en/common"
 import commonKK from "./i18n/kk/common"
+
+if (!localStorage.getItem("i18nextLng")) {
+  localStorage.setItem("i18nextLng", "ru")
+}
 i18n
   // .use(reactI18nextModule)
   // .use(LanguageDetector)
   .init({
     fallbackLng: "en", // use en if detected lng is not available
+    lng: localStorage.getItem("i18nextLng"),
     interpolation: {
       escapeValue: false // react already safes from xss
     },
